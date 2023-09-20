@@ -1,0 +1,371 @@
+1. FIND UNIQUE ELEMENT IN AN ARRAY:
+
+#include <iostream>
+using namespace std;
+
+int findUnique(int arr[], int size){
+    int ans = 0;
+    for(int i=0;i<size;i++){
+        ans = ans ^ arr[i];
+    }
+    return ans;
+}
+
+int main() {
+    
+    int arr[] = {2,3,1,6,3,6,2};
+    cout<<findUnique(arr, 7);
+    
+    return 0;
+}
+
+
+2. FIND DUPLICATE ELEMENT IN AN ARRAY:
+
+#include <iostream>
+using namespace std;
+
+int findDuplicate(int arr[], int size){
+    int ans = 0;
+    for(int i=0; i<size; i++){
+        ans = ans ^ arr[i];
+    }
+    for(int i = 1; i<size; i++){
+        ans = ans ^ i;
+    }
+    return ans;
+}
+
+int main() {
+    
+    int arr[] = {6,3,1,5,4,3,2};
+    int size = 7;
+    
+    cout<<findDuplicate(arr, size);
+
+    return 0;
+}
+
+
+3. FIND INTERSECTION IN TWO SORTED VECTORS:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector <int> findIntersection(vector <int> &v1, int size1, vector <int> &v2, int size2){
+    vector <int> ans;
+    int i = 0, j = 0;
+    while(i<size1 && j<size2){
+        if(v1[i] > v2[j])
+            j++;
+        else if(v1[i] < v2[j])   
+            i++;
+        else{
+            ans.push_back(v1[i]);
+            i++;
+            j++;
+        }
+    }
+    return ans;
+}
+
+int main() {
+    
+    vector <int> v1 = {1,2,2,3,4}; 
+    vector <int> v2 = {2,2,3,3};
+    int size1 = v1.size(), size2 = v2.size();
+    
+    vector <int> ans = findIntersection(v1, size1, v2, size2);
+    for(int i = 0; i< ans.size(); i++){
+        cout<<ans[i]<<" ";
+    }
+    
+    return 0;
+}
+
+
+4. FIND PAIR SUM OF VECTOR EQUAL TO ANY GIVEN VALUE 'K':
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<vector <int>> findPairSum(vector <int> &v, int size, int k){
+    vector<vector <int>> ans;
+    for(int i =0; i<size; i++){
+        for(int j =i+1; j<size; j++){
+            if(v[i] + v[j] == k){
+                vector <int> temp;
+                temp.push_back(min(v[i], v[j]));
+                temp.push_back(max(v[i], v[j]));
+                ans.push_back(temp);
+            }
+        }
+    }
+    sort(ans.begin(), ans.end());
+    return ans;
+}
+
+int main() {
+    
+    vector <int> v1 = {1,2,3,4,5};
+    int k =5;
+    vector<vector <int>> ans = findPairSum(v1,v1.size(),k);
+    for(int i =0;i<ans.size(); i++){
+        for(int j =0; j<ans[i].size();j++){
+            cout<<ans[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+   
+    return 0;
+}
+
+
+5. SORT 0'S AND 1'S WITHOUT SORTING ALGORITHM:
+
+#include <iostream>
+using namespace std;
+
+void sortZeroOne(int arr[], int size){
+    int i =0, j = size-1;
+    while(i<j){
+        while(arr[i] == 0 && i<j)
+            i++;
+        while(arr[j] == 1 && i<j)
+            j--;
+        if(arr[i] == 1 && arr[j] == 0){
+            swap(arr[i], arr[j]);
+            i++; j--;
+        }    
+    }
+    for(int i =0;i<size; i++)
+        cout<<arr[i]<<" ";
+}
+
+int main() {
+    
+   int arr[] = {0,1,1,0,0,1};
+   int size = 6;
+   sortZeroOne(arr,6);
+   
+    return 0;
+}
+
+
+6. SORT 0'S, 1'S AND 2'S WITHOUT SORTING ALGORITHM (DNF SORT):
+
+#include <iostream>
+using namespace std;
+
+void sortZeroOneTwo(int arr[], int size){
+    int i = 0, j = 0, k = size-1;
+    while(j<=k){
+        switch(arr[j]){
+            case 0: swap(arr[i++], arr[j++]);
+                    break;
+            case 1: j++;
+                    break;
+            case 2: swap(arr[j], arr[k--]);
+                    break;
+        }
+    }
+    for(int i = 0; i<size; i++){
+        cout<<arr[i]<<" ";
+    }
+}
+
+int main() {
+    
+    int arr[] = {0, 1, 2, 0, 1, 2};
+    int size = 6;
+    
+    sortZeroOneTwo(arr, size);
+
+    return 0;
+}
+
+
+7. REVERSE AN ARRAY FROM A GIVEN INDEX K:
+
+#include <iostream>
+using namespace std;
+
+void reverseFromGivenIndex(int arr[], int size, int index){
+    int start = index + 1, end = size-1;
+    while(start < end){
+        swap(arr[start++], arr[end--]);
+    }
+    for(int i = 0; i<size; i++)
+        cout<<arr[i]<<" ";
+}
+
+int main() {
+    int arr[] = {1,7,3,6,9,45};
+    int size = 6, k = 3;
+    
+    reverseFromGivenIndex(arr, size, k);
+    
+    return 0;
+}
+
+
+8. MERGE TWO SORTED VECTORS INTO ANOTHER VECTOR:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void mergeTwoSortedVector(vector<int> v1, int size1, vector<int> v2, int size2){
+    vector<int> result;
+    int i = 0, j = 0, k = 0;
+    while(i < size1 && j < size2){
+        if(v1[i] < v2[j]){
+            result.push_back(v1[i++]);
+            k++;
+        }
+        else{
+            result.push_back(v2[j++]);
+            k++;
+        }
+    }
+    while(i < size1)
+        result.push_back(v1[i++]); k++;
+    while(j < size2)
+        result.push_back(v2[j++]); k++;
+    for(int i = 0; i<result.size(); i++)
+        cout<<result[i]<<" ";
+}
+int main() {
+    vector<int> v1 = {1,3,5,7,9};
+    vector<int> v2 = {2,4,6};
+    
+    mergeTwoSortedVector(v1, v1.size(), v2, v2.size());
+    
+    return 0;
+}
+
+
+9. MOVE ALL ZEROS TO RHS OF AN ARRAY (MAKE SURE YOU DIDN'T ALTER THE ORDER OF NON ZERO ELEMENTS):
+
+void moveAllZerosToRhs(int arr[], int size){
+    int i = 0 , j = 0;
+    while(j < size){
+        if(arr[j] == 0)
+            j++;
+        else
+            swap(arr[i++], arr[j++]);
+    }
+    
+    for(int i = 0; i< size; i++)
+        cout<<arr[i]<<" ";
+}
+int main() {
+    int arr[] = {0,1,0,6,3,0};
+    int size = 6;
+    moveAllZerosToRhs(arr, 6);
+    
+    return 0;
+}
+
+
+10. ROTATE ARRAY BY K STEPS:
+
+#include <iostream>
+using namespace std;
+
+void rotateArrayByKSteps(int arr[], int size, int step){
+    int temp[size];
+    for(int i = 0;i< size; i++)
+        temp[(i + step)% size] = arr[i];
+    
+    for(int i = 0; i < size; i++)
+        arr[i] = temp[i];
+    
+    for(int i = 0; i< size; i++)
+        cout<<arr[i]<<" ";
+}
+int main() {
+    int arr[] = {2,7,1,0,6};
+    int size = 5, step = 3;
+    rotateArrayByKSteps(arr, 5, step);
+    
+    return 0;
+}
+
+
+11. ADD TWO VECTORS:
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void addTwoArrays(vector<int> v1, int size1, vector<int> v2, int size2){
+    vector<int> result;
+    int i = size1-1, j = size2-1, carry = 0, sum = -1, digit = -1;
+    while(i>=0 && j>=0){
+        sum = v1[i] + v2[j] + carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        result.push_back(digit);
+        i--;j--;
+    }
+    while(i>=0){
+        sum = v1[i] + carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        result.push_back(digit);
+        i--;
+    } 
+    while(j>=0){
+        sum = v2[j] + carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        result.push_back(digit);
+        j--;
+    } 
+    while(carry){
+        sum = carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        result.push_back(digit);
+    }
+    reverse(result.begin(), result.end());
+    for(int i = 0;i< result.size(); i++)
+        cout<<result[i]<<" ";
+}
+int main() {
+    vector<int> v1 = {6};
+    vector<int> v2 = {1,2,3,4};
+    
+    addTwoArrays(v1, v1.size(), v2, v2.size());
+    
+    return 0;
+}
+
+
+12. CHECK IF ARRAY IS ROTATED AND SORTED:
+
+#include <iostream>
+using namespace std;
+bool checkRotatedSortedArray(int arr[], int size){
+    int cnt = 0;
+    for(int i = 0; i< size-1; i++){
+        if(arr[i] > arr[i+1])
+            cnt++;
+    }
+    if(arr[size-1] > arr[0])
+        cnt++;
+    return cnt<=1;    
+}
+
+int main() {
+    int arr[] = {1,2,3,4,5};
+    int size = 5;
+    cout<<checkRotatedSortedArray(arr, size);
+
+    return 0;
+}

@@ -1,0 +1,385 @@
+BINARY SEARCH QUESTIONS:
+
+1. BINARY SEARCH CODE (This will be used as a template to solve more Binary search questions):
+
+#include <iostream>
+using namespace std;
+
+int binarySearch(int arr[], int size, int key){
+
+    int start = 0, end = size-1;
+
+     while(start <= end){
+         int mid = start + (end - start)/2;
+         
+         if(arr[mid] == key)
+             return mid;
+        else if(arr[mid] < key)
+            start = mid + 1;
+        else
+            end = mid - 1;
+     }
+    return -1; 
+}
+
+int main() {
+    
+    int arr[] = {2,4,6,8,12};
+    int size = 5 , key = 122;
+    
+    cout<<isPresent(arr, size, key);
+
+    return 0;
+}
+
+
+2. FIND LEFTMOST(FIRST) AND RIGHTMOST(LAST) POSITION OF AN ELEMENT IN AN ARRAY:
+
+#include <iostream>
+using namespace std;
+int findLeftPos(int arr[], int size, int key){
+    int start = 0, end = size-1, ans = -1;
+    while(start <= end){
+        int mid = start + (end - start)/2;
+        if(arr[mid] == key){
+            ans = mid;
+            end = mid -1;
+        }
+        else if(arr[mid] < key)
+            start = mid+1;
+        else
+            end = mid-1;
+    }
+    return ans;
+}
+int findRightPos(int arr[], int size, int key){
+    int start = 0, end = size-1, ans = -1;
+    while(start <= end){
+        int mid = start + (end - start)/2;
+        if(arr[mid] == key){
+            ans = mid;
+            start = mid +1;
+        }
+        else if(arr[mid] < key)
+            start = mid+1;
+        else
+            end = mid-1;
+    }
+    return ans;
+}
+
+int main() {
+    int arr[] = {-3,3,3,3,3,3,3,3,6};
+    int size = 9;
+    int key = 3;
+    cout<<findLeftPos(arr, size, key)<<endl;
+    cout<<findRightPos(arr, size, key);
+    
+    return 0;
+}
+
+
+3. FIND PEAK IN MOUNTAIN ARRAY:
+
+#include <iostream>
+using namespace std;
+int findPeakInMountain(int arr[], int size){
+    int start = 0, end = size-1;
+    while(start < end){
+        int mid = start + (end -start)/2;
+        if(arr[mid] < arr[mid+1])
+            start = mid +1;
+        else
+            end = mid;
+    }
+    return end;
+}
+int main() {
+    int arr[] = {0,2,3,7,5,2,-6};
+    int size = 7;
+    cout<<findPeakInMountain(arr, size)<<endl;
+    
+    return 0;
+}
+
+
+4. FIND PIVOT IN ROTATED SORTED ARRAY:
+
+#include <iostream>
+using namespace std;
+int findPivotInRotatedSortedArray(int arr[], int size){
+    int start = 0, end = size-1;
+    while(start < end){
+        int mid = start + (end -start)/2;
+        if(arr[mid] > arr[0])
+            start = mid+1;
+        else
+            end = mid;
+    }
+    return start;
+}
+int main() {
+    int arr[] = {7,9,1,2,3};
+    int size = 5;
+    cout<<findPivotInRotatedSortedArray(arr, size)<<endl;
+    
+    return 0;
+}
+
+
+5. FIND ELEMENT IN ROTATED SORTED ARRAY:
+
+#include <iostream>
+using namespace std;
+
+int findPivotInRotatedSortedArray(int arr[], int size){
+    int start = 0, end = size-1;
+    while(start < end){
+        int mid = start + (end -start)/2;
+        if(arr[mid] > arr[0])
+            start = mid+1;
+        else
+            end = mid;
+    }
+    return start;
+}
+
+int binarySearch(int arr[], int s, int e, int key){
+
+    int start = s, end = e;
+
+     while(start <= end){
+         int mid = start + (end - start)/2;
+         
+         if(arr[mid] == key)
+             return mid;
+        else if(arr[mid] < key)
+            start = mid + 1;
+        else
+            end = mid - 1;
+     }
+    return -1; 
+}
+
+int findElementInRotatedSortedArray(int arr[], int size, int key){
+    int pivot = findPivotInRotatedSortedArray(arr, size);
+    if(key >= arr[pivot] && key <= arr[size-1])
+        return binarySearch(arr, pivot, size-1, key);
+    else    
+        return binarySearch(arr, 0, pivot-1, key);
+}
+
+int main() {
+    int arr[] = {7,9,1,2,3};
+    int size = 5;
+    int key = 3;
+    cout<<findElementInRotatedSortedArray(arr, size, key);
+    
+    return 0;
+}
+
+
+6. FIND SQUARE ROOT OF A NUMBER:
+
+#include <iostream>
+using namespace std;
+
+long long int findSquareRoot(int n){
+    int s = 0, e = n, ans = -1;
+    while(s < e){
+        long long int mid = s + (e - s)/2;
+        if(mid * mid == n)
+            return mid;
+        else if(mid * mid > n)
+            e = mid - 1;
+        else{
+            ans = mid;
+            s = mid + 1;
+        }    
+    }
+    return ans;
+}
+
+double findMorePrecision(int n, int temp, int decimal){
+    double factor = 1;
+    double ans = temp;
+    for(int i = 0; i<decimal; i++){
+        factor/=10;
+        for(double j = ans; j*j < n; j+=factor)
+            ans = j;
+    }
+    return ans;
+}
+
+int main() {
+    
+    int number = 26;
+    int temp = findSquareRoot(number);
+    cout<<findMorePrecision(number, temp, 3)<<endl;
+    return 0;
+}
+
+
+7. BOOK ALLOCATION PROBLEM (REMEMBER - MAXIMUM NUMBER OF PAGES ASSIGNED TO A STUDENT IS MINIMUM IN CONTIGOUS MANNER) INPUT DATA MAY OR MAY NOT BE SORTED:
+
+#include <iostream>
+using namespace std;
+
+bool isPossibleSolution(int *arr, int m, int size, int mid){
+    int pageSum = 0, studentCount = 1;
+    // iterate over all the pages
+    for(int i = 0; i< size; i++){
+        // check for first student
+        if(pageSum + arr[i] <= mid)
+            pageSum = pageSum + arr[i];
+        else{
+            // move to next student
+            studentCount++;
+            pageSum = 0;
+            if(studentCount > m || arr[i] > mid)
+                return false;
+            pageSum = arr[i];
+        }
+    }
+    return true;
+}
+
+int allocateBookPagesToStudents(int *arr, int m, int size){
+    // find your search space range
+    int start = 0, sum = 0, answer = -1;
+    for(int i = 0; i< size; i++)
+        sum = sum + arr[i];
+    int end = sum;
+    
+    // apply binary search logic
+    while(start < end){
+        int mid = start + (end - start) / 2;
+        if(isPossibleSolution(arr, m, size, mid)){
+            answer = mid;
+            end = mid - 1;
+        }
+        else
+            start = mid + 1;
+    }
+    return answer;
+}
+
+int main() {
+    int arr[] = {12, 34, 67, 90};
+    int m = 2;
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    cout<<allocateBookPagesToStudents(arr, m, size);
+
+    return 0;
+}
+
+
+8. PAINTER'S PARTITION PROBLEM (REMEMBER - MINIMUM TIME REQUIRED BY PAINTERS TO PAINT BOARDS IN CONTIGOUS MANNER) INPUT MAY OR MAY NOT BE SORTED:
+
+#include <iostream>
+using namespace std;
+
+bool isPossibleSolution(int *arr, int k, int size, int mid){
+    int partitionSum = 0, painterCount = 1;
+    // iterate over all the time partition
+    for(int i = 0; i< size; i++){
+        // check for first painter
+        if(partitionSum + arr[i] <= mid)
+            partitionSum = partitionSum + arr[i];
+        else{
+            // move to next painter
+            painterCount++;
+            partitionSum = 0;
+            if(painterCount > k || arr[i] > mid)
+                return false;
+            partitionSum = arr[i];
+        }
+    }
+    return true;
+}
+
+int paintersPartition(int *arr, int k, int size){
+    // find your search space range
+    int start = 0, sum = 0, answer = -1;
+    for(int i = 0; i< size; i++)
+        sum = sum + arr[i];
+    int end = sum;
+    
+    // apply binary search logic
+    while(start <= end){
+        int mid = start + (end - start) / 2;
+        if(isPossibleSolution(arr, k, size, mid)){
+            answer = mid;
+            end = mid - 1;
+        }
+        else
+            start = mid + 1;
+    }
+    return answer;
+}
+
+int main() {
+    int arr[] = {10, 20, 30, 40};
+    int k = 2;
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    cout<<paintersPartition(arr, k, size);
+
+    return 0;
+}
+
+
+9. AGGRESSIVE COWS PROBLEM (FIND THE LARGEST MINIMUM DISTANCE SO THAT THE TWO COWS DON'T FIGHT WITH EACH OTHER) INPUT MAY OR MAY NOT BE SORTED:
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+bool isPossible(vector<int> v, int k, int mid){
+    // below line shows we have places the first cow
+    int cowCount = 1, cowPosition = v[0];
+    /* logic to place second cow at max distance from first cow so that they don't fight */ 
+    for(int i = 0; i< v.size(); i++){
+        if(v[i] - cowPosition >= mid){
+            cowPosition = v[i];
+            cowCount++;
+            if(cowCount == k)
+                return true;
+        }
+    }
+    return false;
+}
+
+int aggressiveCows(vector<int> v, int k){
+    // finding the start and end range to apply binary search logic
+    int start = 0, end, maxi = INT_MIN, ans = -1;
+    /* sorting the vector will help to place cows easily in isPossible() function */
+    sort(v.begin(), v.end());
+    for(int i = 0; i< v.size(); i++)
+        maxi = max(maxi, v[i]);
+    end = maxi;
+    
+    // binary search logic
+    while(start <= end){
+        int mid = start + (end - start) / 2;
+        if(isPossible(v, k, mid)){
+            ans = mid;
+            start = mid + 1;
+        }
+        else
+            end = mid - 1;
+    }
+    return ans;
+}
+
+int main() {
+    vector<int> v = {0, 4, 3, 7, 10, 9};
+    int k = 3;
+    
+    cout<<aggressiveCows(v, k);
+
+    return 0;
+}

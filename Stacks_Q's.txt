@@ -1,0 +1,860 @@
+1. IMPLEMENT STACK USING ARRAYS:
+
+#include <iostream>
+using namespace std;
+
+class Stack{
+  public:
+    int *arr;
+    int top;
+    int size;
+    
+    Stack(int size){
+        this -> size = size;
+        arr = new int[size];
+        top = -1;
+    } 
+    
+    void push(int data){
+    if(size - top > 1){
+        top++;
+        arr[top] = data;
+    }
+    else
+        cout<<"stack overflowed";
+    }
+
+int pop(){
+    if(top == -1)
+        cout<<"stack underflowed";
+    else{
+        int ans = arr[top--]; 
+        return ans;
+    }
+}
+
+bool isEmpty(){
+    if(top == -1)
+        return true;
+    return false;    
+}
+
+int peak(){
+    if(top == -1)
+        return -1;
+    return arr[top];    
+    }
+};
+
+int main(){
+    Stack st(5);
+    st.push(3);
+    st.push(6);
+    st.push(7);
+    cout<<st.peak()<<endl;
+    st.push(7);
+    st.push(7);
+    cout<<st.isEmpty()<<endl;
+    cout<<st.pop()<<endl;
+    cout<<st.pop()<<endl;
+    cout<<st.pop()<<endl;
+    cout<<st.pop()<<endl;
+    cout<<st.pop()<<endl;
+    cout<<st.pop()<<endl;
+    return 0;
+}
+
+
+2. IMPLEMENT STACK USING LL:
+
+
+
+3. IMPLEMENT 2 STACKS USING A SINGLE ARRAY:
+
+#include <iostream>
+using namespace std;
+
+class Stack{
+  public:
+    int *arr;
+    int top1;
+    int top2;
+    int size;
+    
+    Stack(int size){
+        this -> size = size;
+        arr = new int[size];
+        top1 = -1;
+        top2 = size; 
+    } 
+    
+    void push1(int data){
+    if(top2 - top1 > 1)
+        arr[++top1] = data;
+    else
+        cout<<"stack overflowed";
+    }
+
+    int pop1(){
+        if(top1 == -1)
+            cout<<"stack underflowed";
+        else 
+            return arr[top1--];
+    }
+
+    void push2(int data){
+    if(top2 - top1 > 1)
+        arr[--top2] = data;
+    else
+        cout<<"stack overflowed";
+    }
+
+    int pop2(){
+        if(top2 == size)
+            cout<<"stack underflowed";
+        else 
+            return arr[top2++];
+    }
+};
+
+int main(){
+    Stack st(7);
+    st.push1(3);
+    st.push1(6);
+    st.push2(7);
+    st.push1(7);
+    st.push2(0);
+    st.push1(9);
+    st.push2(-3);
+    //st.push1(-3);
+    cout<<st.pop1()<<endl;
+    cout<<st.pop1()<<endl;
+    cout<<st.pop2()<<endl;
+    cout<<st.pop1()<<endl;
+    cout<<st.pop2()<<endl;
+    cout<<st.pop1()<<endl;
+    cout<<st.pop2()<<endl;
+    //cout<<st.pop2()<<endl;
+    return 0;
+}
+
+
+4. REVERSE A STRING USING A STACK:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    string str = "shubham", result = "";
+    stack<char> st;
+    for(int i = 0;i<str.length();i++){
+        char ch = str[i];
+        st.push(ch);
+    }
+    while(!st.empty()){
+        char ch = st.top();
+        result.push_back(ch);
+        st.pop();
+    }
+    cout<<result;
+
+    return 0;
+}
+
+
+5. REMOVE MIDDLE ELEMENT OF A STACK:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+void removeMiddleElement(stack<int> &st, int size, int count){
+    if(count == size/2){
+        st.pop();
+        return;
+    }
+    int ans = st.top();
+    st.pop();
+    removeMiddleElement(st, size, count+1);
+    st.push(ans);
+}
+int main() {
+    stack<int> st;
+    int count = 0;
+    st.push(3);
+    st.push(5);
+    st.push(6);
+    st.push(31);
+    st.push(8);
+    st.push(11);
+    st.push(54);
+    
+    removeMiddleElement(st, st.size(), count);
+    cout<<st.top()<<endl;
+    st.pop();
+    st.pop();
+    st.pop();
+    //st.pop();
+    //st.pop();
+    cout<<st.top();
+    return 0;
+}
+
+
+6. BALANCED PARENTHESIS:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    string str = "{()}[]";
+    stack<char> st;
+    for(int i = 0;i<str.length(); i++){
+        if(str[i] == '(' || str[i] == '{' || str[i] == '['){
+            st.push(str[i]);
+        }
+        else{
+            if(!st.empty()){
+                if((str[i] == ')' && st.top() == '(') || (str[i] == '}' && st.top() == '{') || (str[i] == ']' && st.top() == '['))
+                        st.pop();
+                else{
+                    cout<<"unbalanced"<<endl;
+                    exit(0);
+                }
+            }
+            else{
+                cout<<"unbalanced"<<endl;
+                exit(0);
+            }
+        }
+    }
+    if(!st.empty())
+        cout<<"unbalanced"<<endl;
+    else
+        cout<<"balanced"<<endl;
+    
+    return 0;
+}
+
+
+7. REMOVE BOTTOM MOST ELEMENT OF STACK:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void removeBottomElement(stack<int> &st, int size){
+    if(size == 1){
+        st.pop();
+        return;
+    }
+    int data = st.top();
+    st.pop();
+    removeBottomElement(st,size - 1);
+    st.push(data);
+}
+int main() {
+    stack<int> st;
+    st.push(3);
+    st.push(5);
+    st.push(6);
+    st.push(31);
+    st.push(8);
+    st.push(11);
+    st.push(54);
+    removeBottomElement(st,st.size());
+    cout<<st.top()<<endl;
+    st.pop();
+    st.pop();
+    st.pop();
+    st.pop();
+    //st.pop();
+    //st.pop();
+    cout<<st.top();
+
+    return 0;
+}
+
+
+8. INSERT AT THE BOTTOM OF THE STACK:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void insertAtBottom(stack<int> &st, int size){
+    if(size == 0){
+        st.push(78);
+        return;
+    }
+    int data = st.top();
+    st.pop();
+    insertAtBottom(st,size - 1);
+    st.push(data);
+}
+int main() {
+    stack<int> st;
+    st.push(3);
+    st.push(5);
+    st.push(6);
+    st.push(31);
+    st.push(8);
+    st.push(11);
+    st.push(54);
+    insertAtBottom(st,st.size());
+    cout<<st.top()<<endl;
+    st.pop();
+    st.pop();
+    st.pop();
+    st.pop();
+    st.pop();
+    st.pop();
+    st.pop();
+    //st.pop();
+    cout<<st.top();
+
+    return 0;
+}
+
+
+9. REVERSE A STACK:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void insertAtBottom(stack<int> &st, int data){
+    if(st.empty()){
+        st.push(data);
+        return;
+    }
+    int element = st.top();
+    st.pop();
+    insertAtBottom(st, data);
+    st.push(element);
+}
+
+void reverseStack(stack<int> &st){
+    if(st.empty()){
+        return;
+    }
+    int data = st.top();
+    st.pop();
+    reverseStack(st);
+    insertAtBottom(st, data);
+}
+
+int main() {
+    stack<int> st;
+    st.push(3);
+    st.push(5);
+    st.push(0);
+    st.push(1);
+    st.push(8);
+    st.push(-11);
+    st.push(4);
+    reverseStack(st);
+    cout<<st.top()<<endl;
+
+    return 0;
+}
+
+
+10. SORT THE STACK WITHOUT USING LOOPS:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void actualSortFunction(stack<int> &st, int data){
+    if(st.empty() || st.top() < data){
+        st.push(data);
+        return;
+    }
+    int element = st.top();
+    st.pop();
+    actualSortFunction(st, data);
+    st.push(element);
+}
+
+void sortStack(stack<int> &st){
+    if(st.empty())
+        return;
+    int data = st.top();
+    st.pop();
+    sortStack(st);
+    actualSortFunction(st, data);    
+}
+
+int main() {
+    stack<int> st;
+    st.push(3);
+    st.push(5);
+    st.push(0);
+    st.push(1);
+    st.push(8);
+    st.push(-11);
+    st.push(4);
+    sortStack(st);
+    cout<<st.top()<<endl;
+
+    return 0;
+}
+
+
+11 CHECK FOR REDUNDANT BRACKETS:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    stack<char> st;
+    string str = "(a+b)";
+    for(int i = 0; i<str.length(); i++){
+        if(str[i] == '(' || str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/')
+            st.push(str[i]);
+        else{
+            if(str[i] == ')'){
+                bool answer = true;
+                while(st.top() != '('){
+                    if(st.top() == '+' || st.top() == '-' || st.top() == '*' || st.top() == '/')
+                        answer = false;
+                    st.pop();
+                }
+                if(answer){
+                    cout<<"Redundant parenthesis"<<endl;
+                    exit(0);
+                }
+                st.pop();
+            }
+        }    
+    }  
+    cout<<"Not redundant"<<endl;    
+
+    return 0;
+}
+
+
+12. MINIMUM COST TO MAKE A STRING VALID:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    string str = "{{";
+    // IF STRING IS OF ODD LENGTH THEN THEIR IS NO WAY WE CAN TO CALCULATE THE MIN COST TO MAKE STRING VALID
+    if(str.length() % 2 == 1){
+        cout<<"invalid case"<<endl;
+        exit(0);
+    }
+    stack<char> st;
+    // REMOVE VALID PART FROM STRING AND ONLY INVALID PART WILL BE LEFT
+    for(int i = 0; i<str.length(); i++){
+	// PUSH ALL '{' INTO STACK
+        if(str[i] == '{')
+            st.push(str[i]);
+        else{
+	    // FOR EVERY '}' POP '{' i.e. WE ARE ENSURING THAT VALID PART OF STRING IS SIMPLY REMOVED SO THAT WE CAN PROCESS THE INVALID PART	
+            if(!st.empty() && st.top() == '{')
+                st.pop();
+            else
+		// PUSHING INVALID PART ONTO STACK ONCE THE STACK BECOMES EMPTY
+                st.push(str[i]);
+        }    
+    }
+    // HERE 'a' STORES COUNT OF ALL '{' THAT ARE INVALID AND 'b' STORES COUNT OF ALL '}' WHICH ARE INVALID
+    int a = 0, b = 0;
+    while(!st.empty()){
+        if(st.top() == '{')
+            a++;
+        else
+            b++;
+        st.pop();    
+    }
+    // FORMULA DERIVED (SEE VDO) WHICH CALCULATES THE MIN COST TO MAKE A STRING VALID
+    int ans = (a + 1)/2 + (b+1)/2;
+    cout<<ans<<endl;
+        
+    return 0;
+}
+
+
+13. FIND NEXT SMALLER ELEMENT IN AN ARRAY:
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main() {
+    int arr[] = {2,1,4,3};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    vector<int> v(size);
+    stack<int> st;
+    st.push(-1);
+    // STARTING FROM LAST ELEMENT OF ARRAY BECAUSE WE KNOW IT'S NEXT SMALLER VALUES IS -1 AND HENCE STACK IS PUSHED WITH -1
+    for(int i = size-1; i>= 0 ;i--){
+        while(st.top() >= arr[i]){
+            st.pop();
+        }
+        v[i] = st.top();
+        st.push(arr[i]);    // THIS PUSH OPERATION IS ACTING AS NEXT SMALLER ELEMENT FOR NEXT ITERATION
+    }
+    for(int i = 0 ; i< v.size(); i++)
+        cout<<v[i]<<" ";
+        
+    return 0;
+}
+
+
+14. FIND MAXIMUM AREA OF A RECTANGLE IN HISTOGRAM:
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <climits>
+using namespace std;
+
+vector<int> nextSmallerElement(int arr[], int size){
+    vector<int> v(size);
+    stack<int> st;
+    st.push(-1);
+    for(int i = size-1; i>= 0 ;i--){
+        while(st.top() != -1 && arr[st.top()] >= arr[i]){
+            st.pop();
+        }
+        v[i] = st.top();
+        st.push(i);
+    }
+    return v;
+}
+
+vector<int> prevSmallerElement(int arr[], int size){
+    vector<int> v(size);
+    stack<int> st;
+    st.push(-1);
+    for(int i = 0; i< size ;i++){
+        while(st.top() != -1 && arr[st.top()] >= arr[i]){
+            st.pop();
+        }
+        v[i] = st.top();
+        st.push(i);
+    }
+    return v;
+}
+
+int main() {
+    int arr[] = {2,1,5,6,2,3};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    vector<int> next(size);
+    vector<int> prev(size);
+    next = nextSmallerElement(arr, size);
+    prev = prevSmallerElement(arr, size);
+    
+    int area = INT_MIN;
+    for(int i = 0; i< size; i++){
+        int length = arr[i];
+        if(next[i] == -1)
+            next[i] = size;
+        int breadth = next[i] - prev[i] - 1;
+        int newArea = length * breadth;
+        area = max(area, newArea);
+    }
+    cout<<area<<endl;
+    return 0;
+}
+
+
+15. CELEBRITY PROBLEM:
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#define ROW 4
+#define COL 4
+using namespace std;
+
+bool youKnowMe(int a, int b, vector<vector<int>> &v){
+    if(v[a][b] == 1)
+        return true;
+    else
+        return false;
+}
+
+int main() {
+    vector<vector<int>> v = {{0, 0, 1, 0},
+                             {0, 0, 1, 0},
+                             {0, 0, 0, 0},
+                             {0, 0, 1, 0}};
+
+    // PUSH EVERY PEOPLE i.e. ROW ONTO THE STACK
+    stack<int> st;
+    for(int i = 0; i < ROW; i++)
+        st.push(i);
+
+    // TAKE OUT TWO PEOPLE FROM STACK AND CHECK IF THEY KNOW EACH OTHER OR NOT
+    while(st.size() > 1){
+        int a = st.top();
+        st.pop();
+        int b = st.top();
+        st.pop();
+
+	// FUNCTION TO CHECK IF TWO PEOPLE KNOW EACH OTHER OR NOT
+        if(youKnowMe(a, b, v))
+            st.push(b);
+        else
+            st.push(a);
+    }
+
+    // HERE STACK TOP GIVE US THE POTENTIAL CANDIDATE WHO CAN BE A CELEBRITY BUT WE HAVE TO VERIFY ONCE IN THE MATRIX
+    int ans = st.top(), zeroCount = 0, oneCount = 0;
+    for(int i = 0; i < COL; i++){
+        if(v[ans][i] == 0)
+            zeroCount++;
+    }
+    for(int i = 0; i < ROW; i++){
+        if(v[i][ans] == 1)
+            oneCount++;
+    }
+    if(zeroCount - 1 == COL - 1 && oneCount == ROW - 1)
+        cout<<ans;
+    else
+        cout<<"No celebrity exists"<<endl;
+    return 0;
+}
+
+
+
+16. FIND MAXIMUM AREA OF A RECTANGLE IN BINARY MATRIX OF 1:
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <climits>
+#define ROW 4
+#define COL 4
+using namespace std;
+
+vector<int> findNextSmallElement(int *arr, int size){
+    vector<int> v(size);
+    stack<int> st;
+    st.push(-1);
+    for(int i = size-1; i>= 0 ;i--){
+        while(st.top() != -1 && arr[st.top()] >= arr[i]){
+            st.pop();
+        }
+        v[i] = st.top();
+        st.push(i);
+    }
+    return v;
+}
+
+vector<int> findPrevSmallElement(int *arr, int size){
+    vector<int> v(size);
+    stack<int> st;
+    st.push(-1);
+    for(int i = 0; i< size ;i++){
+        while(st.top() != -1 && arr[st.top()] >= arr[i]){
+            st.pop();
+        }
+        v[i] = st.top();
+        st.push(i);
+    }
+    return v;
+}
+
+int findRectangleArea(int *arr, int size){
+    vector<int> next(size);
+    vector<int> prev(size);
+    next = findNextSmallElement(arr, size);
+    prev = findPrevSmallElement(arr, size);
+    
+    int area = INT_MIN;
+    for(int i = 0; i< size; i++){
+        int length = arr[i];
+        if(next[i] == -1)
+            next[i] = size;
+        int breadth = next[i] - prev[i] - 1;
+        int newArea = length * breadth;
+        area = max(area, newArea);
+    }
+    return area;
+}
+
+int main() {
+    int arr[ROW][COL] = {{0,1,1,0},
+                         {1,1,1,1},
+                         {1,1,1,1},
+                         {1,1,0,0}};
+                              
+    int area = findRectangleArea(arr[0], COL);
+    for(int i = 1; i<ROW; i++){
+        for(int j = 0; j<COL; j++){
+            if(arr[i][j] != 0)
+                arr[i][j] = arr[i][j] + arr[i-1][j];
+            else
+                arr[i][j] = 0;
+        }
+        int newArea = findRectangleArea(arr[i], COL);
+        area = max(area, newArea);
+    }
+    cout<<area<<endl;
+    return 0;
+}
+
+
+
+17. DESIGN A STACK THAT CAN FIND MINIMUM ELEMENT IN O(1) TIME AND SPACE:
+
+#include <iostream>
+#include <stack>
+using namespace std;
+stack<int> st;
+int mini;
+// in order to simplify the working of getMin() function we have applied logic inside pushIn and popOut function
+void pushIn(int data){
+    if(st.empty()){
+        st.push(data);
+        mini = data;
+    }
+    else{
+        if(mini < data)
+            st.push(data);
+        else{
+	    // very important formula in case of pushIn() function
+            st.push(2*data - mini);
+            mini = data;
+        }    
+    }
+}
+
+int popOut(){
+    if(st.empty())
+        return -1;
+    if(st.top() > mini){
+        int val = st.top();
+        st.pop();
+        return val;
+    }
+    else{
+	// very important formula in case of popOut() function
+        int prevMin = mini;
+        mini = 2*mini - st.top();
+        st.pop();
+        return prevMin;
+    }    
+}
+
+void topElement(){
+    if(st.empty())
+        cout<<"stack empty"<<endl;
+    if(st.top() > mini)
+        cout<<st.top()<<endl;
+    else
+        cout<<mini<<endl;
+}
+
+void isEmpty(){
+    if(st.empty())
+        cout<<"empty stack"<<endl;
+    else
+        cout<<"not empty"<<endl;
+}
+
+int getMin(){
+    if(st.empty()){
+        cout<<"empty stack"<<endl;
+        return -1;
+    }
+    return mini;
+}
+
+int main() {
+    pushIn(2);
+    pushIn(3);
+    pushIn(1);
+    pushIn(0);
+    pushIn(6);
+    pushIn(5);
+    cout<<getMin()<<endl;
+    cout<<popOut()<<endl;
+    cout<<popOut()<<endl;
+    cout<<getMin()<<endl;
+    topElement();
+    cout<<popOut()<<endl;
+    cout<<popOut()<<endl;
+    topElement();
+    cout<<popOut()<<endl;
+    topElement();
+    cout<<getMin()<<endl;
+    cout<<popOut()<<endl;
+    cout<<popOut()<<endl;
+
+    return 0;
+}
+
+
+18. IMPLEMENT N STACKS IN AN ARRAY:
+
+#include <iostream>
+#define N 6
+using namespace std;
+
+int arr[N];
+int numberOfStack = 3, freespot = 0;
+int top[3];
+int nex[N];
+
+bool push(int data, int stackNumber){
+    if(freespot == -1)
+        return false;
+    int index = freespot;
+    arr[index] = data;
+    freespot = nex[index];
+    nex[index] = top[stackNumber - 1];
+    top[stackNumber - 1] = index;
+    return true;
+}
+
+bool pop(int stackNumber){
+    if(top[stackNumber - 1] == -1)
+        return false;
+    int index = top[stackNumber - 1];
+    top[stackNumber - 1] = nex[index];
+    nex[index] = freespot;
+    freespot = index;
+    return true;
+}
+
+int topElement(int stackNumber){
+    if(top[stackNumber - 1] == -1)
+        return -1;
+    int ans = top[stackNumber - 1];
+    return arr[ans];
+}
+
+int main() {
+    for(int i = 0; i<N; i++)
+        nex[i] = i + 1;
+    nex[5] = -1;
+    
+    for(int i = 0; i<3; i++)
+        top[i] = -1;
+        
+    cout<<push(2,1)<<endl;
+    cout<<push(5,1)<<endl;
+    cout<<topElement(1)<<endl;
+    cout<<push(10,2)<<endl;
+    cout<<topElement(2)<<endl;
+    cout<<pop(1)<<endl;
+    cout<<pop(2)<<endl;
+    cout<<pop(2)<<endl;
+    cout<<topElement(2)<<endl;
+    cout<<pop(1)<<endl;
+    cout<<topElement(1)<<endl; 
+
+    return 0;
+}

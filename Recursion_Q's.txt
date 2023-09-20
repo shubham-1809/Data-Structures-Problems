@@ -1,0 +1,537 @@
+1. FIND Nth TERM OF FIBONACCI SERIES USING RECURSION:
+
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n){
+    if(n == 0)
+        return 0;
+    if(n == 1)
+        return 1;
+    return fibonacci(n - 1) + fibonacci(n - 2);    
+}
+int main() {
+    cout<<fibonacci(7);
+
+    return 0;
+}
+
+
+2. FIND NUMBER OF WAYS TO CLIMB UPTO N STAIRS(SLIGHT VARIATIOIN OF FIBONACCI SERIES):
+
+#include <iostream>
+using namespace std;
+
+int NumberOfWaysToReachNStairs(int n){
+    if(n < 0)
+        return 0;
+    if(n == 0)
+        return 1;
+    return NumberOfWaysToReachNStairs(n - 1) + NumberOfWaysToReachNStairs(n - 2);    
+}
+int main() {
+    cout<<NumberOfWaysToReachNStairs(6);
+
+    return 0;
+}
+
+
+3. SAY A NUMBER:
+
+#include <iostream>
+using namespace std;
+
+void sayANumber(int n, string str[]){
+    if(n == 0)
+        return;
+    int digit = n % 10;
+    n = n / 10;
+    sayANumber(n, str);
+    cout<<str[digit]<<" ";
+}
+int main() {
+    string str[10] = {"Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"};
+    sayANumber(10567, str);
+
+    return 0;
+}
+
+
+4. CHECK IF ARRAY IS SORTED OR NOT:
+
+#include <iostream>
+using namespace std;
+
+bool isSorted(int *arr, int size){
+    if(size == 0 || size == 1)
+        return true;
+    if(arr[0] > arr[1])
+        return false;
+    return isSorted(arr + 1, size - 1);    
+}
+
+int main() {
+    int arr[] = {1,3,5,7,9,11};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    cout<<isSorted(arr, size)<<endl;
+
+    return 0;
+}
+
+
+5. FIND SUM OF ARRAY ELEMENTS USING RECURSION:
+
+#include <iostream>
+using namespace std;
+ int findSum(int arr[], int size){
+     if(size == 0)
+        return 0;
+    if(size == 1)
+        return arr[0];
+    int sum = arr[0] + findSum(arr + 1, size - 1);
+    return sum;
+ }
+ 
+int main() {
+    int arr[] = {1,3,5,0,9};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    cout<<findSum(arr, size)<<endl;
+
+    return 0;
+}
+
+
+6. LINEAR SEARCH USING RECURSION:
+
+#include <iostream>
+using namespace std;
+
+bool linearSearch(int *arr, int size, int key){
+    if(size == 0)
+        return false;
+    if(arr[0] == key)
+        return true;
+    return linearSearch(arr + 1, size - 1, key);    
+}
+
+int main() {
+    int arr[] = {4,2,1,7,8,0};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int key = 8;
+    cout<<linearSearch(arr, size, key)<<endl;
+
+    return 0;
+}
+
+
+7. BINARY SEARCH USING RECURSION:
+
+#include <iostream>
+using namespace std;
+
+bool binarySearch(int *arr, int start, int end, int key){
+    if(start > end)
+        return false;
+    int mid = start + (end - start) / 2;
+    if(arr[mid] == key)
+        return true;
+    if(arr[mid] > key)
+        binarySearch(arr, start, mid - 1, key);
+    else
+        binarySearch(arr, mid + 1, end, key);
+}
+
+int main() {
+    int arr[] = {2,4,6,8,9,10};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int key = -8;
+    cout<<binarySearch(arr, 0, size - 1, key)<<endl;
+
+    return 0;
+}
+
+
+8. REVERSE THE STRING USING RECURSION:
+
+#include <iostream>
+using namespace std;
+
+string reverseString(string &str, int start, int end){
+    if(start > end)
+        return str;
+    swap(str[start++], str[end--]);
+    return reverseString(str, start, end);
+}
+
+int main() {
+    string str = "rtr";
+    cout<<reverseString(str, 0, str.length() - 1);
+
+    return 0;
+}
+
+
+9. CHECK IF STRING IS PALINDROME OR NOT:
+
+#include <iostream>
+using namespace std;
+
+bool checkPalindrome(string str, int start, int end){
+    if(start > end)
+        return true;
+    if(str[start] != str[end])
+        return false;
+    return checkPalindrome(str, start + 1, end - 1);    
+}
+
+int main() {
+    string str = "rtrt";
+    cout<<checkPalindrome(str, 0, str.length() - 1);
+
+    return 0;
+}
+
+
+
+10. MERGE SORT USING RECURSION:
+
+#include <iostream>
+using namespace std;
+
+void merge(int *arr, int start, int end){
+    int mid = start + (end - start) / 2;
+    int size1 = mid - start + 1, size2 = end - mid;
+    int *newArray1 = new int[size1];
+    int *newArray2 = new int[size2];
+    
+    int mainArrayIndex = start;
+    for(int i = 0; i<size1; i++)
+        newArray1[i] = arr[mainArrayIndex++];
+    mainArrayIndex = mid + 1;    
+    for(int i = 0; i< size2; i++)
+        newArray2[i] = arr[mainArrayIndex++];
+        
+    int i = 0, j = 0;
+    mainArrayIndex = start;
+    while(i < size1 && j < size2){
+        if(newArray1[i] < newArray2[j])
+            arr[mainArrayIndex++] = newArray1[i++];
+        else
+            arr[mainArrayIndex++] = newArray2[j++];
+    }
+    while(i < size1)
+        arr[mainArrayIndex++] = newArray1[i++];
+    while(j < size2)
+        arr[mainArrayIndex++] = newArray2[j++];
+}
+
+void mergeSort(int *arr, int start, int end){
+    if(start >= end)
+        return;
+        
+    int mid = start + (end - start) / 2;
+    mergeSort(arr, start, mid);
+    mergeSort(arr, mid + 1, end);
+    
+    merge(arr, start, end);
+}
+
+int main() {
+   int arr[] = { 12, 11, 13, 5, 6, 7 }; 
+   int size = sizeof(arr) / sizeof(arr[0]);
+   mergeSort(arr, 0, size - 1);
+   for(int i = 0; i< size; i++)
+        cout<<arr[i]<<" ";
+
+    return 0;
+}
+
+
+
+11. COUNT INVERSION PROBLEM:
+
+
+
+12. QUICK SORT USING RECURSION:
+
+#include <iostream>
+using namespace std;
+
+int partition(int *arr, int start, int end){
+    int pivot = arr[start];
+    int count = 0;
+    for(int i = start + 1; i<= end; i++){
+        if(arr[i] <= pivot)
+            count++;
+    }
+    int pivotIndex = start + count;
+    swap(arr[start], arr[pivotIndex]);
+    
+    int i = start, j = end;
+    while(i < pivotIndex && j > pivotIndex){
+        while(arr[i] < arr[pivotIndex])
+            i++;
+        while(arr[j] >= arr[pivotIndex])
+            j--;
+        if(i < pivotIndex && j > pivotIndex) 
+            swap(arr[i], arr[j]);
+    }
+    return pivotIndex;
+}
+
+void quickSort(int *arr, int start, int end){
+    if(start >= end)
+        return;
+        
+    int partitionIndex = partition(arr, start, end);
+    quickSort(arr, start, partitionIndex - 1);
+    quickSort(arr, partitionIndex + 1, end);
+}
+
+int main() {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    quickSort(arr, 0, size - 1);
+    for(int i = 0; i< size; i++)
+        cout<<arr[i]<<" ";
+
+    return 0;
+}
+
+
+13. FIND POWERSET(ALL SUBSETS) OF A SET:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void solve(int arr[], int index, int size, vector<vector<int>> &output, vector<int> v){
+    if(index >= size){
+        output.push_back(v);
+        return;
+    }
+    // EXCLUDING
+    solve(arr, index + 1, size, output, v);
+    // INCLUDING
+    v.push_back(arr[index]);
+    solve(arr, index + 1, size, output, v);
+}
+
+int main() {
+    int arr[] = {1,2,3};
+    int size = sizeof(arr) / sizeof(arr[0]), index = 0;
+    vector<vector<int>> output;
+    vector<int> v;
+    
+    solve(arr, index, size, output, v);
+    for(auto i : output){
+        for(auto j : i)
+            cout<<j<<" ";
+        cout<<endl;    
+    }  
+    return 0;
+}
+
+
+14. FIND ALL THE SUBSEQUENCES OF A STRING(ERROR IS COMING, LOOK INTO THAT ONCE YOU LEARN ABOUT STRINGS):
+
+#include <iostream>
+#include <vector>
+#include<algorithm>
+using namespace std;
+
+void solve(string str, int index, string output, vector<string> &v){
+    if(index >= str.length()){
+        v.push_back(output);
+        return;
+    }
+    // EXCLUDING
+    solve(str, index + 1, output, v);
+    // INCLUDING
+    char element = str[index];
+    output.push_back(element);     
+    solve(str, index + 1, output, v);
+}
+
+int main() {
+    string str = "abc", output = "";
+    int index = 0;
+    vector<string> v;
+
+    solve(str, index, output, v);
+    sort(v.begin(), v.end());
+    for(auto i : v)
+        cout<<i<<endl;
+    return 0;
+}
+
+
+15. PHONE KEYPAD PROBLEM:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void solve(string input, string output, int index, vector<string> &ans, vector<string> mapping){
+    if(index >= input.length()){
+        ans.push_back(output);
+        return;
+    }
+    int number = input[index] - '0';
+    string temp = mapping[number];
+    
+    for(int i = 0; i< temp.length(); i++){
+        output.push_back(temp[i]);
+        solve(input, output, index + 1, ans, mapping);
+        output.pop_back();
+    }
+}
+
+int main() {
+    string input = "", output;
+    int index = 0;
+    vector<string> ans;
+    if(input.length() == 0){
+        for(auto i : ans){
+        for(auto j : i)
+            cout<<j<<" ";
+        cout<<endl;
+    }
+    }
+    vector<string> mapping = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    
+    solve(input, output, index, ans, mapping);
+    for(auto i : ans){
+        for(auto j : i)
+            cout<<j<<" ";
+        cout<<endl;
+    }
+
+    return 0;
+}
+
+
+16. FIND PERMUTATIONS:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void solve(vector<int> input, int index, vector<vector<int>> &ans){
+    if(index >= input.size()){
+        ans.push_back(input);
+        return;
+    }
+    for(int i = index; i< input.size(); i++){
+        swap(input[index], input[i]);
+        solve(input, index + 1, ans);
+        swap(input[index], input[i]);
+    }
+}
+
+int main() {
+    vector<int> input = {1,2,3,4};
+    int index = 0;
+    vector<vector<int>> ans;
+    
+    solve(input, index, ans);
+    for(auto i : ans){
+        for(auto j : i)
+            cout<<j<<" ";
+        cout<<endl;    
+    }
+    return 0;
+}
+
+
+17. RAT IN A MAZE PROBLEM(SEGMENTATION FAULT IS COMING):
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#define N 4
+using namespace std;
+
+bool isSafe(vector<vector<int>> maze, int x, int y, vector<vector<bool>> isVisited){
+    if((x >= 0 && x < N) && (y >= 0 && y < N) && maze[x][y] == 1 && isVisited[x][y] == false)
+        return true;
+    return false;    
+}
+
+void solve(vector<vector<int>> &maze, vector<string> &ans, int x, int y, vector<vector<bool>> isVisited, string output){
+    if(x == N - 1 && y == N - 1){
+        ans.push_back(output);
+        return;
+    }
+    isVisited[x][y] = true;
+    
+    // downwards
+    int newx = x + 1;
+    int newy = y;
+    if(isSafe(maze, newx, newy, isVisited)){
+        output.push_back('D');
+        //isVisited[newx][newy] = true;
+        solve(maze, ans, newx, newy, isVisited, output);
+        output.pop_back();
+    }
+    // leftwards
+    newx = x;
+    newy = y - 1;
+    if(isSafe(maze, newx, newy, isVisited)){
+        output.push_back('L');
+        //isVisited[newx][newy] = true;
+        solve(maze, ans, newx, newy, isVisited, output);
+        output.pop_back();
+    }
+    // rightwards
+    newx = x;
+    newy = y + 1;
+    if(isSafe(maze, newx, newy, isVisited)){
+        output.push_back('R');
+        //isVisited[newx][newy] = true;
+        solve(maze, ans, newx, newy, isVisited, output);
+        output.pop_back();
+    }
+    // upwards
+    newx = x - 1;
+    newy = y;
+    if(isSafe(maze, newx, newy, isVisited)){
+        output.push_back('U');
+        //isVisited[newx][newy] = true;
+        solve(maze, ans, newx, newy, isVisited, output);
+        output.pop_back();
+    }
+    
+    isVisited[x][y] = false;
+}
+
+int main() {
+    cout<<"a";
+    vector<vector<int>> maze = {{1, 0, 0, 0},
+                                {1, 1, 0, 1}, 
+                                {1, 1, 0, 0},
+                                {0, 1, 1, 1}};
+    if(maze[0][0] == 0)
+        cout<<"Invalid case"<<endl;
+        
+    vector<string> ans;
+    int x = 0, y = 0;
+    string output = "";
+    vector<vector<bool>> isVisited;
+    cout<<"s";
+    for(int i = 0; i< N; i++){
+        for(int j= 0; j< N; j++)
+            isVisited[i][j] = false;
+    }
+     
+    cout<<"f";    
+    solve(maze, ans, x, y, isVisited, output);
+    sort(ans.begin(), ans.end());
+    
+    for(int i = 0; i< ans.size(); i++)
+        cout<<ans[i]<<endl;
+    return 0;
+}

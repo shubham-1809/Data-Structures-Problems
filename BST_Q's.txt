@@ -1,0 +1,1377 @@
+1. IMPLEMENT AND TRAVERSE BST USING ALL 4 TRAVERSALS:
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+void inorderTraversalOfBst(Node* &root){
+    if(root == NULL)
+        return;
+        
+    inorderTraversalOfBst(root -> left);
+    cout<<root -> data<<" ";
+    inorderTraversalOfBst(root -> right);
+    
+}
+
+void preOrderTraversalOfBst(Node* &root){
+    if(root == NULL)
+        return;
+    
+    cout<<root -> data<<" ";    
+    preOrderTraversalOfBst(root -> left);
+    preOrderTraversalOfBst(root -> right);
+    
+}
+
+void postOrderTraversalOfBst(Node* &root){
+    if(root == NULL)
+        return;
+        
+    postOrderTraversalOfBst(root -> left);
+    postOrderTraversalOfBst(root -> right);
+    cout<<root -> data<<" ";
+    
+}
+
+void levelOrderTraversalOfBst(Node* &root){
+    queue<Node*> q;
+    q.push(root);
+    
+    while(!q.empty()){
+        Node* temp = q.front();
+        q.pop();
+        cout<< temp -> data<<" ";
+        if(temp -> left)
+            q.push(temp -> left);
+        if(temp -> right)
+            q.push(temp -> right);
+    }
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    cout<<"inorder traversal: "<<endl;
+    inorderTraversalOfBst(root);
+    cout<<endl;
+    cout<<"preorder traversal: "<<endl;
+    preOrderTraversalOfBst(root);
+    cout<<endl;
+    cout<<"postorder traversal: "<<endl;
+    postOrderTraversalOfBst(root);
+    cout<<endl;
+    cout<<"level order traversal: "<<endl;
+    levelOrderTraversalOfBst(root);
+    
+    return 0;
+}
+
+
+2. SEARCH AN ELEMENT IN A BST(RECURSIVE WAY BUT NOT OPTIMAL):
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+bool searchInBst(Node* &root, int key){
+    if(key == root -> data)
+        return true;
+    if(root == NULL)
+        return false;
+    if(root -> data < key)
+        return searchInBst(root -> right, key);
+    else
+        return searchInBst(root -> left, key);
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    int key = 5;
+    cout<<searchInBst(root, key);
+    
+    return 0;
+}
+
+
+3. SEARCH AN ELEMENT IN A BST(ITERATIVE WAY OPTIMAL):
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+bool searchInBst(Node* &root, int key){
+    Node* temp = root;
+    while(temp){
+        if(temp -> data == key)
+            return true;
+        if(temp -> data < key)
+            temp = temp -> right;
+        else
+            temp = temp -> left;
+    }
+    return false;
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    int key = 2;
+    cout<<searchInBst(root, key);
+    
+    return 0;
+}
+
+
+4. FIND MININMUM AND MAXIMUM ELEMENT IN A BST:
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+bool searchInBst(Node* &root, int key){
+    Node* temp = root;
+    while(temp){
+        if(temp -> data == key)
+            return true;
+        if(temp -> data < key)
+            temp = temp -> right;
+        else
+            temp = temp -> left;
+    }
+    return false;
+}
+
+Node* findMinElement(Node* &root){
+    Node* temp = root;
+    while(temp -> left)
+        temp = temp -> left;
+    return temp;    
+}
+
+Node* findMaxElement(Node* &root){
+    Node* temp = root;
+    while(temp -> right)
+        temp = temp -> right;
+    return temp;
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    cout<<findMinElement(root) -> data<<endl;
+    cout<<findMaxElement(root) -> data;
+    
+    return 0;
+}
+
+
+5. FIND THE INORDER SUCCESSOR AND PREDECESSOR OF A NODE IN BST:
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+// HERE WE ARE FINDING INORDER SUCCESSOR AND PREDECESSOR OF ROOT
+Node* findInorderSuccessor(Node* &root){
+    // least element in right subtree of a Node
+    if(root -> right == NULL)
+        return NULL;
+    Node* temp = root -> right;
+    while(temp -> left)
+        temp = temp -> left;
+    return temp;    
+}
+
+Node* findInorderPredecessor(Node* &root){
+    // gratest element in left subtree of a Node
+    if(root -> left == NULL)
+        return NULL;
+    Node* temp = root -> left;
+    while(temp -> right)
+        temp = temp -> right;
+    return temp;
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    cout<<"inorder successor: "<<findInorderSuccessor(root) -> data<<endl;
+    cout<<"inorder predecessor: "<<findInorderPredecessor(root) -> data;
+    
+    return 0;
+}
+
+
+6. DELETE A NODE IN BST(FOR DELETION OF A NODE HAVING TWO CHILD THERE IS SOME ERROR):
+
+#include <iostream>
+#include <queue> 
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+Node* deleteNodeInBst(Node* &root, int key){
+    if(root -> data == key){
+        // key might have no children
+        if(root -> left == NULL && root -> right == NULL){
+            delete root;
+            cout<<"deleted"<<endl;
+            return NULL;
+        }
+        // key might have left or right child
+        // left child
+        if(root -> left && root -> right == NULL){
+            Node* temp = root -> left;
+            delete root;
+            cout<<"deleted"<<endl;
+            return temp;
+        }
+        // right child
+         if(root -> right && root -> left == NULL){
+            Node* temp = root -> right;
+            delete root;
+            cout<<"deleted"<<endl;
+            return temp;
+        }
+        // key have both the children
+        if(root -> left && root -> right){
+            // finding inorder successor
+            Node* successor = root -> right;
+            while(successor -> left)
+                successor = successor -> left;
+            int val = successor -> data;
+            root -> data = val;
+            root -> right = deleteNodeInBst(root -> right, val);
+            cout<<"deleted"<<endl;
+            return root;
+        }
+            
+    }
+    else if(root -> data < key)
+        root -> right = deleteNodeInBst(root -> right, key);
+    else
+        root -> left = deleteNodeInBst(root -> left, key);
+    return root;    
+}
+
+void levelOrderTraversal(Node* &root){
+    queue<Node*> q;
+    q.push(root);
+    
+    while(!q.empty()){
+        Node* temp = q.front();
+        q.pop();
+        cout<< temp -> data<<" ";
+        if(temp -> left)
+            q.push(temp -> left);
+        if(temp -> right)
+            q.push(temp -> right);
+    }
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    int key = 11;
+    deleteNodeInBst(root, key);
+    levelOrderTraversal(root);
+    
+    return 0;
+} 
+
+
+7. CHECK IF A GIVEN TREE IS BST OR NOT:
+
+#include <iostream>
+#include <climits>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+bool validateBst(Node* root, int mini, int maxi){
+    if(root == NULL)
+        return true;
+    
+    if(root -> data >= mini && root -> data <= maxi){
+        bool leftAns = validateBst(root -> left, mini, root -> data);
+        bool rightAns = validateBst(root -> right, root -> data, maxi);
+        
+        if(leftAns && rightAns)
+            return true;
+    }
+    return false;    
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    cout<<validateBst(root, INT_MIN, INT_MAX);
+
+    return 0;
+}
+
+
+8. FIND KTH SMALLEST ELEMENT IN A BST:
+
+#include <iostream>
+#include <climits>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+Node* findKthSmallestElement(Node* root, int &k){
+    if(root == NULL)
+        return NULL;
+    // inorder traversal with a slight variation
+    Node* temp = findKthSmallestElement(root -> left, k);
+    if(temp)
+        return temp;
+    k--;
+    if(k == 0)
+        return root;
+    return findKthSmallestElement(root -> right, k);    
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    int k = 3;
+    cout<<findKthSmallestElement(root, k) -> data;
+
+    return 0;
+}
+
+
+9. FIND LCA OF GIVEN TWO NODES IN A TREE:
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+Node* findLcaOfBst(Node* root, int n1, int n2){
+    if(root == NULL)
+        return NULL;
+    // if both nodes are in a right sub tree
+    if(root -> data < n1 && root -> data < n2)
+        return findLcaOfBst(root -> right, n1, n2);
+    // if both nodes are in a left sub tree
+    else if(root -> data > n1 && root -> data > n2)  
+        return findLcaOfBst(root -> left, n1, n2);
+    else
+        return root;
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    int n1 = 5, n2 = 4;
+    cout<<findLcaOfBst(root, n1, n2) -> data;
+    
+    return 0;
+}
+
+
+10. CHECK IF A GIVEN BST IS A TWO SUM OR NOT:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+// ALTERNATE OF RECURSIVE INORDER TRAVERSAL IS MORRIS TRAVERSAL WHICH REQUIRES O(1) SPACE
+void findInorder(Node* root, vector<int> &inOrder){
+    // finding inorder traversal
+    if(root == NULL)
+        return;
+    findInorder(root -> left, inOrder);
+    inOrder.push_back(root -> data);
+    findInorder(root -> right, inOrder);
+}
+
+bool isTwoSumBst(Node* root, int k){
+    vector<int> inOrder;
+    findInorder(root, inOrder);
+    // traversing the vector to find the required sum
+    int start = 0, end = inOrder.size() - 1;
+    
+    while(start < end){
+        if(k == inOrder[start] + inOrder[end])
+            return true;
+        else if(inOrder[start] + inOrder[end] > k)
+            end--;
+        else
+            start++;
+    }
+    return false;
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    int k = 14;
+    cout<<isTwoSumBst(root, k);
+
+    return 0;
+}
+
+
+11. CONVERT THE GIVEN BST TO A SORTED LL:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+// ALTERNATE OF INORDER IS MORRIS TRAVERSAL
+void findInorder(Node* root, vector<int> &inOrder){
+    // finding inorder traversal
+    if(root == NULL)
+        return;
+    findInorder(root -> left, inOrder);
+    inOrder.push_back(root -> data);
+    findInorder(root -> right, inOrder);
+}
+
+Node* convertBstToSortedLL(Node* root){
+    vector<int> inOrder;
+    findInorder(root, inOrder);
+    
+    // creating first node of a LL using inorder vector
+    Node* newRoot = new Node(inOrder[0]);
+    Node* curr = newRoot;
+    for(int i = 1; i < inOrder.size(); i++){
+        // forming the entire LL logic i.e. left will point to NULL and right will point to next node
+        Node* temp = new Node(inOrder[i]);
+        curr -> left = NULL;
+        curr -> right = temp;
+        curr = temp;
+    }
+    // last node pointers will point to NULL
+    curr -> left = NULL;
+    curr -> right = NULL;
+    // return head of the LL
+    return newRoot;
+}
+
+void traverseLL(Node* head){
+    if(head == NULL)
+        return;
+    Node* temp = head;
+    while(temp){
+        cout<<temp -> data<<" -> ";
+        temp = temp -> right;
+    }
+    cout<<"NULL";
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    Node* head = convertBstToSortedLL(root);
+    traverseLL(head);
+
+    return 0;
+}
+
+
+12. CONVERT THE GIVEN BST TO BBST (OR) CREATE A BBST FROM INORDER TRAVERSAL:
+NOTE/ HINT - INORDER TRAVERSAL OF BOTH BST AND BBST IS A SORTED LIST.
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+void findInorder(Node* root, vector<int> &inOrder){
+    // finding inOrder of the given BST 
+    if(root == NULL)
+        return;
+    findInorder(root -> left, inOrder);
+    inOrder.push_back(root -> data);
+    findInorder(root -> right, inOrder);
+}
+
+Node* buildBstFromInorder(int start, int end, vector<int> &inOrder){
+    // since inorder vector is sorted so we will find the mid element and create a node with it and recursion will build the entire bbst on the left and right of the middle node
+    if(start > end)
+        return NULL;
+    int mid = start + (end - start) / 2;
+    
+    Node* newNode = new Node(inOrder[mid]);
+    newNode -> left = buildBstFromInorder(start, mid - 1, inOrder);
+    newNode -> right = buildBstFromInorder(mid + 1, end, inOrder);
+    return newNode;
+}
+
+Node* bstToBbst(Node* root){
+    vector<int> inOrder;
+    findInorder(root, inOrder);
+    
+    // remember that inorder of bst and bbst both are same, so here our problem now gets converted to create a bst/bbst from given inorder traversal
+    return buildBstFromInorder(0, inOrder.size() - 1, inOrder);
+}
+
+void traverseNewBbst(Node* root){
+    if(root == NULL)
+        return;
+    traverseNewBbst(root -> left);
+    cout<<root -> data<<" ";
+    traverseNewBbst(root -> right);
+}
+
+int main()
+{
+    Node *root = NULL;
+    constructBst(root);
+    Node* newRoot = bstToBbst(root);
+    traverseNewBbst(newRoot);
+    return 0;
+}
+
+
+13. CONSTRUCT A BST FROM A GIVEN PREORDER TRAVERSAL:
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node* left;
+        Node* right;
+        
+        Node(int data){
+            this -> data = data;
+            this -> left = NULL;
+            this -> right = NULL;
+        }
+};
+
+Node* buildBstFromPreOrder(vector<int> &preOrder, int &index, int mini, int maxi){
+    if(index > preOrder.size())
+        return NULL;
+    if(preOrder[index] < mini || preOrder[index] > maxi)
+        return NULL;
+        
+    Node* newNode = new Node(preOrder[index]);
+    index++;
+    newNode -> left = buildBstFromPreOrder(preOrder, index, mini, newNode -> data);
+    newNode -> right = buildBstFromPreOrder(preOrder, index, newNode -> data, maxi);
+    return newNode;
+}
+
+void traverseBst(Node* root){
+    if(root == NULL)
+        return;
+    traverseBst(root -> left);
+    cout<<root -> data<<" ";
+    traverseBst(root -> right);
+}
+
+int main()
+{
+    vector<int> preOrder = {15, 10, 8, 12, 20, 16, 25};
+    int index = 0;
+    Node* newRoot = buildBstFromPreOrder(preOrder, index, INT_MIN, INT_MAX);
+    traverseBst(newRoot);
+
+    return 0;
+}
+
+
+14. MERGE TWO BSTs(THIS IS FIRST APPROACH, BUT IT IS NOT PREFERRED MOST OF THE TIME):
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+void bstToInorder(Node* root, vector<int> &v){
+    if(root == NULL)
+        return;
+    bstToInorder(root -> left, v);
+    v.push_back(root -> data);
+    bstToInorder(root -> right, v);
+}
+
+vector<int> mergeTwoSortedVectors(vector<int> &v1, vector<int> &v2){
+    vector<int> ans(v1.size() + v2.size());
+    int i = 0, j = 0, k = 0;
+    
+    while(i < v1.size() && j < v2.size()){
+        if(v1[i] < v2[j])
+            ans[k++] = v1[i++];
+        else
+            ans[k++] = v2[j++];
+    }
+    while(i < v1.size())
+        ans[k++] = v1[i++];
+    while(j < v2.size())
+        ans[k++] = v2[j++];
+    return ans;    
+}
+
+Node* inOrderToBst(vector<int> &ans, int start, int end){
+    if(start > end)
+        return NULL;
+        
+    int mid = start + (end - start) / 2;
+    Node* newNode = new Node(ans[mid]);
+    newNode -> left = inOrderToBst(ans, start, mid - 1);
+    newNode -> right = inOrderToBst(ans, mid + 1, end);
+    return newNode;
+}
+
+void traverseMergedBst(Node* root){
+    if(root == NULL)
+        return;
+    traverseMergedBst(root -> left);
+    cout<<root -> data<<" ";
+    traverseMergedBst(root -> right);
+}
+
+int main()
+{
+    Node* root1 = NULL;
+    Node* root2 = NULL;
+    vector<int> v1, v2, ans;
+    cout<<"first BST: "<<endl;
+    constructBst(root1);
+    cout<<"second BST"<<endl;
+    constructBst(root2);
+    
+    // find inorder of both the BST
+    bstToInorder(root1, v1);
+    bstToInorder(root2, v2);
+    
+    // merge both inorder vector into new vector
+    ans = mergeTwoSortedVectors(v1, v2);
+    
+    // construct a BST from this merged inorder sorted vector
+    Node* root3 = inOrderToBst(ans, 0, ans.size() - 1);
+    traverseMergedBst(root3);
+    
+    return 0;
+}
+
+
+APPROACH 2(HERE SPACE COMPLEXITY IS OPTIMIZED i.e. O(h1 + h2)):
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;    
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int element;
+    cin>> element;
+    
+    while(element != -1){
+        root = buildBst(root, element);
+        cout<<"enter data"<<endl;
+        cin>> element;
+    }
+}
+
+void bstToSortedDoubleLL(Node* root, Node* &head){
+    if(root == NULL)
+        return;
+        
+    // recursive call on right subtree first
+    bstToSortedDoubleLL(root -> right, head);
+    // joining the right sub tree we got from above recursion to root -> right
+    root -> right = head;
+    // if head value is valid then make it's left point to root to create double LL
+    if(head)
+        head -> left = root;
+    // update head pointer for next recursive call     
+    head = root; 
+    bstToSortedDoubleLL(root -> left, head);
+}
+
+Node* mergeTwoSortedLL(Node* head1, Node* head2){
+    Node* head = NULL;
+    Node* tail = NULL;
+    while(head1 && head2){
+        if(head1 -> data < head2 -> data){
+            if(head == NULL){
+                head = head1;
+                tail = head1;
+                head1 = head1 -> right;
+            }
+            else{
+                tail -> right = head1;
+                head1 -> left = tail;
+                tail = head1;
+                head1 = head1 -> right;
+            }
+        }
+        else{
+            if(head == NULL){
+                head = head2;
+                tail = head2;
+                head2 = head2 -> right;
+            }
+            else{
+                tail -> right = head2;
+                head2 -> left = tail;
+                tail = head2;
+                head2 = head2 -> right;
+            }
+        }
+    }
+    while(head1){
+        tail -> right = head1;
+        head1 -> left = tail;
+        tail = head1;
+        head1 = head1 -> right;
+    }
+    while(head2){
+        tail -> right = head2;
+        head2 -> left = tail;
+        tail = head2;
+        head2 = head2 -> right;
+    }
+    return head;
+}
+
+int countNodesInList(Node* head){
+    int count = 0;
+    Node* temp = head;
+    while(temp){
+        count++;
+        temp = temp -> right;
+    }
+    return count;
+}
+
+Node* constructMergedBstFromSortedList(Node* &head, int n){
+    // base case
+    if(n <= 0 || head == NULL)
+        return NULL;
+    
+    // construct left subtree  first
+    Node* left = constructMergedBstFromSortedList(head, n / 2);
+    // assign root a value;
+    Node* root = head;
+    // update head to next value n LL
+    head = head -> right;
+    // update root -> left to left i.e. root's left pointer
+    root -> left = left;
+    // construct right subtree now
+    root -> right = constructMergedBstFromSortedList(head, n - 1 - n / 2);
+    
+    return root;
+}
+
+void traverseNewMergedBst(Node* root){
+    if(root == NULL)
+        return;
+    traverseNewMergedBst(root -> left);
+    cout<<root -> data<<" ";
+    traverseNewMergedBst(root -> right);
+}
+
+int main()
+{
+    Node* root1 = NULL;
+    Node* root2 = NULL;
+    cout<<"first BST: "<<endl;
+    constructBst(root1);
+    cout<<"second BST"<<endl;
+    constructBst(root2);
+    
+    // convert these BSTs into sorted double LL
+    // for first BST
+    Node* head1 = NULL;
+    bstToSortedDoubleLL(root1, head1);
+    head1 -> left = NULL;
+    // for second BST
+    Node* head2 = NULL;
+    bstToSortedDoubleLL(root2, head2);
+    head2 -> left = NULL;
+    
+    // merge these two sorted LL using inplace algorithm
+    Node* newHead = mergeTwoSortedLL(head1, head2);
+    
+    // construct BST from newly merge sorted list
+    Node* newRoot = constructMergedBstFromSortedList(newHead, countNodesInList(newHead));
+    traverseNewMergedBst(newRoot);
+    return 0;
+}
+
+
+15. FIND THE VALID BST SIZE INSIDE A BINARY TREE:
+
+#include <iostream>
+#include <climits>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left;
+        Node *right;
+    Node(int d){
+        this -> data = d;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+class MyClass{
+    public:
+        int maxi;
+        int mini;
+        bool isBst;
+        int size;
+};
+
+Node* buildTree(Node* root){
+    cout<<"enter data: "<<endl;
+    int data;
+    cin>> data;
+    root = new Node(data);
+    
+    if(data == -1)
+        return NULL;
+    cout<<"enter a data in left of "<<data<<endl;
+    root -> left = buildTree(root -> left);
+    cout<<"enter a data in right of "<<data<<endl;
+    root -> right = buildTree(root -> right);
+    return root;
+}
+
+MyClass findValidBst(Node* root, int &ans){
+    // base case
+    if(root == NULL)
+        return {INT_MIN, INT_MAX, true, 0};
+    
+    // traverse in postorder fashion     
+    MyClass leftAns = findValidBst(root -> left, ans);  
+    MyClass rightAns = findValidBst(root -> right, ans);
+    
+    // now processing the current node
+    MyClass currNode;
+    // set all the variables of MyClass for this current node
+    currNode.size = leftAns.size + rightAns.size + 1;
+    currNode.mini = min(leftAns.mini, root -> data);
+    currNode.maxi = max(rightAns.maxi, root -> data);
+    
+    if(leftAns.isBst && rightAns.isBst && root -> data > leftAns.maxi && root -> data < rightAns.mini)
+        currNode.isBst = true;
+    else
+        currNode.isBst = false;
+    
+    // if current node is valid bst then update your maxsize answer    
+    if(currNode.isBst)
+        ans = max(ans, currNode.size);
+    
+    return currNode;
+}
+
+int main()
+{
+    Node* root = NULL;
+    root = buildTree(root);
+    int maxSize = 0;
+    MyClass newRoot = findValidBst(root, maxSize);
+    cout<<maxSize<<endl;
+}

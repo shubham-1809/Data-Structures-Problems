@@ -1,0 +1,1367 @@
+LINKED LIST QUESTIONS:
+
+1. SINGLE LL CODE (This will be used as a template to solve more LL questions):
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL";
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(2);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 4);
+    insertAtTail(tail, 6);
+    insertAtTail(tail, 8);
+    insertAtTail(tail, 10); 
+    
+    printList(head);
+    
+    return 0;
+}
+
+
+2. REVERSE SINGLE LL:
+
+Node* reverseList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    Node* prev = NULL;
+    Node* curr = head;
+    Node* next = NULL;
+    while(curr){
+        next = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = next;
+    }
+    printList(prev);
+}
+
+int main() {
+     reverseList(head);
+     return 0;
+}
+
+
+3. FIND MIDDLE NODE OF LL:
+
+Node* middleNodeOfList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    Node* slow = head;
+    Node* fast = head -> next;
+    while(fast){
+        fast = fast -> next;
+        if(fast)
+            fast = fast -> next;
+        slow = slow -> next;    
+    }
+    return slow;
+}
+
+int main() {
+    cout<<middleNodeOfList(head) -> data;
+    return 0;
+}
+
+
+4. FIND IF LL IS CIRCULAR OR NOT(THIS CODE ALSO CONSIST OF HOW TO MAKE A CIRCULAR LL):
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &head, Node* &tail, int data){
+    Node* ptr = head;
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+    temp -> next = ptr;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+        //break;
+    }  
+    cout<<"NULL";
+}
+
+bool isCircularList(Node* head){
+    if(head == NULL || head -> next == NULL)
+        return false;
+    if(head -> next == head)
+        return true;
+    
+    Node* temp = head -> next;
+    while(temp != NULL && temp != head)
+        temp = temp -> next;
+    if(temp == head)
+        return true;
+    else
+        return false;
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(2);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(head,tail, 4);
+    insertAtTail(head,tail, 6);
+    insertAtTail(head,tail, 8);
+    insertAtTail(head,tail, 10); 
+    
+    //printList(head);
+    cout<<endl;
+    cout<<isCircularList(head);
+   
+    return 0;
+}
+
+
+5. DETECT,REMOVE AND FIND LENGTH OF CYCLE IN LL:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL";
+}
+
+Node* findStartingNodeInCycle(Node* &slow, Node* &fast, Node* &head){
+    slow = head;
+    while(slow != fast){
+        slow = slow -> next;
+        fast = fast -> next;
+    }
+    return slow;
+}
+
+void removeCycle(Node* &head){
+    Node* temp = head -> next;
+    while(temp -> next != head)
+        temp = temp -> next;
+    temp -> next = NULL;
+}
+
+int lengthOfCycle(Node* &head){
+    Node* temp = head;
+    int cnt = 1;
+    while(temp -> next != head){
+        temp = temp -> next;
+        cnt++;
+    }
+    return cnt;
+}
+bool isCyclicList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return false;
+    if(head -> next == head)
+       return true;   
+    
+    Node* slow = head;
+    Node* fast = head;
+    while(slow && fast){
+        fast = fast -> next;
+        if(fast)
+            fast = fast -> next;
+        slow = slow -> next;  
+        if(slow == fast){
+            Node* temp = findStartingNodeInCycle(slow, fast ,head);
+            cout<<lengthOfCycle(temp)<<endl;
+            removeCycle(temp);
+            return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(2);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 4);
+    insertAtTail(tail, 6);
+    insertAtTail(tail, 8);
+    insertAtTail(tail, 10); 
+    insertAtTail(tail, 12);
+    insertAtTail(tail, 14);
+    insertAtTail(tail, 16);
+    
+    head -> next -> next -> next ->next -> next -> next -> next -> next = head -> next -> next -> next -> next;
+    //printList(head);
+    cout<<endl;
+    cout<<isCyclicList(head)<<endl;
+    printList(head);
+    return 0;
+}
+
+
+6. CHECK IF LL IS PALINDROME OR NOT:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL";
+}
+
+Node* middleNodeOfList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    Node* slow = head;
+    Node* fast = head -> next;
+    while(fast && fast -> next){
+        fast = fast -> next -> next;
+        slow = slow -> next;    
+    }
+    return slow;
+}
+
+Node* reverseList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    Node* prev = NULL;
+    Node* curr = head;
+    Node* next = NULL;
+    while(curr){
+        next = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+bool isPalindromeList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return true;
+    Node* middle = middleNodeOfList(head);
+    //cout<<middle -> data<<endl;
+    if(middle -> next){
+        middle -> next = reverseList(middle -> next);
+        Node* head1 = head;
+        Node* head2 = middle -> next;
+        while(head2){
+            if(head1 -> data != head2 -> data)
+                return false;
+            head1 = head1 -> next;
+            head2 = head2 -> next;    
+        }
+    }
+    else{
+        if(head -> data == head -> next -> data)
+            return true;
+        return false;    
+    }
+    middle -> next = reverseList(middle -> next);
+   // printList(head);
+    return true;
+}
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(1);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 2);
+    insertAtTail(tail, 3);
+    insertAtTail(tail, 3);
+    insertAtTail(tail, 2); 
+    insertAtTail(tail, 4);
+    
+    printList(head);
+    cout<<endl;
+    cout<<isPalindromeList(head)<<endl;
+    printList(head);
+    
+    return 0;
+}
+
+
+7. REMOVE DUPLICATE NODES FROM A SORTED LL:
+
+void removeDuplicateInSortedList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        cout<<"Invalid Case"<<endl;
+    Node* temp = head;
+    while(temp -> next){
+        if(temp -> data == temp -> next -> data){
+            Node* ptr = temp -> next;
+            temp -> next = temp -> next -> next;
+            delete ptr;
+        }
+	else
+            temp = temp -> next;
+    }
+}
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(11);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 11);
+    insertAtTail(tail, 13);
+    insertAtTail(tail, 14);
+    insertAtTail(tail, 15); 
+    insertAtTail(tail, 43);
+    insertAtTail(tail, 46);
+    insertAtTail(tail, 60);
+    
+    printList(head);
+    cout<<endl;
+    removeDuplicateInSortedList(head);
+    printList(head);
+    
+    return 0;
+}
+
+
+8. SORT 0's, 1's AND 2's IN A LL:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL";
+}
+void insertFunction(Node* &head, Node* &tail, Node* &temp){
+    tail -> next = temp;
+    tail = temp;
+}
+
+Node* sortZeroOneTwoInList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    Node* zeroHead = new Node(-1);
+    Node* zeroTail = zeroHead;
+    Node* oneHead = new Node(-1);
+    Node* oneTail = oneHead;
+    Node* twoHead = new Node(-1);
+    Node* twoTail = twoHead;
+    Node* temp = head;
+    
+    while(temp){
+        if(temp -> data == 0)
+            insertFunction(zeroHead, zeroTail, temp);
+        else if(temp -> data == 1)
+            insertFunction(oneHead, oneTail, temp);
+        else
+            insertFunction(twoHead, twoTail, temp);
+        temp = temp -> next;    
+    }
+    zeroTail -> next = oneHead -> next;
+    oneTail -> next = twoHead -> next;
+    twoTail -> next = NULL;
+    
+   return zeroHead -> next;
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(1);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 0);
+    insertAtTail(tail, 2);
+    insertAtTail(tail, 1);
+    insertAtTail(tail, 1); 
+    insertAtTail(tail, 2);
+    insertAtTail(tail, 0);
+    insertAtTail(tail, 1);
+    insertAtTail(tail, 0);
+    
+    printList(head);
+    cout<<endl;
+    Node* start = sortZeroOneTwoInList(head);
+    printList(start);
+    
+    return 0;
+}
+
+
+9. ADD TWO LL:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+Node* reverseList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    Node* prev = NULL;
+    Node* curr = head;
+    Node* next = NULL;
+    while(curr){
+        next = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+void createNode(Node* &listHead, Node* &listTail, int digit){
+    Node* temp = new Node(digit);
+    if(listHead == NULL){
+        listHead = temp;
+        listTail = temp;
+        return;
+    }
+    else{
+        listTail -> next = temp;
+        listTail = temp;
+    }
+}
+
+Node* addTwoList(Node* &head1, Node* &head2){
+    if(head1 == NULL || head2 == NULL)
+        return head1;
+    Node* start1 = reverseList(head1);
+    Node* start2 = reverseList(head2);
+    Node* temp1 = start1;
+    Node* temp2 = start2;
+    Node* listHead = NULL; Node* listTail = NULL;
+    int sum = -1, carry = 0, digit = -1;
+    while(temp1 && temp2){
+        sum = temp1 -> data + temp2 -> data + carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        createNode(listHead, listTail, digit);
+        temp1 = temp1 -> next;
+        temp2 = temp2 -> next;
+    }
+    while(temp1){
+        sum = temp1 -> data + carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        createNode(listHead, listTail, digit);
+        temp1 = temp1 -> next;
+    }
+    while(temp2){
+        sum = temp2 -> data + carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        createNode(listHead, listTail, digit);
+        temp2 = temp2 -> next;
+    }
+    while(carry){
+        sum = carry;
+        digit = sum % 10;
+        carry = sum / 10;
+        createNode(listHead, listTail, digit);
+    }
+    return listHead;
+}
+int main() {
+    
+    Node* head1 = NULL;
+    Node* node1 = new Node(2);
+    head1 = node1;
+    Node* tail1 = node1;
+    insertAtTail(tail1, 4);
+    insertAtTail(tail1, 6);
+    
+    Node* head2 = NULL;
+    Node* node2 = new Node(1);
+    head2 = node2;
+    Node* tail2 = node2;
+    insertAtTail(tail2, 3);
+    insertAtTail(tail2, 5); 
+    
+    printList(head1);
+    printList(head2);
+    Node* listHead = addTwoList(head1, head2);
+    Node* listHead1 = reverseList(listHead);
+    printList(listHead1);
+    return 0;
+}
+
+
+// PERFORM ABOVE LOGIC USING SINGLE WHILE LOOP(JUST A TEMPLATE FOR YOUR UNDERSTANDING):
+	int carry = 0;
+        while( (l1 != NULL || l2 != NULL) || carry) {
+            int sum = 0; 
+            if(l1 != NULL) {
+                sum += l1->val; 
+                l1 = l1 -> next; 
+            }
+            
+            if(l2 != NULL) {
+                sum += l2 -> val; 
+                l2 = l2 -> next; 
+            }
+            
+            sum += carry; 
+            carry = sum / 10; 
+            ListNode *node = new ListNode(sum % 10); 
+            temp -> next = node; 
+            temp = temp -> next; 
+        }
+        return dummy -> next;
+
+
+10. REVERSE LL IN K GROUP:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+Node* reverseKnodesInList(Node* &head, int k){
+    if(head == NULL)
+        return head;
+    Node* next = NULL;
+    Node* prev = NULL;
+    Node* curr = head;
+    while(curr && k){
+        next = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = next;
+        k--;
+    }
+    if(next)
+        head -> next = reverseKnodesInList(next, 2);
+    return prev;    
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(2);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 4);
+    insertAtTail(tail, 6);
+    insertAtTail(tail, 8);
+    insertAtTail(tail, 10); 
+    
+    printList(head);
+    Node* newHead = reverseKnodesInList(head, 2);
+    printList(newHead);
+    
+    return 0;
+}
+
+
+11. A - CLONE LL USING RANDOM POINTERS [APPROACH 1 - USING A MAP.SPACE COMPLEXITY = O(n)]:
+
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    Node* random;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+        this -> random = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+void createAndInsertNode(Node* &head, Node* &tail, int data){
+    Node* newNode = new Node(data);
+    if(head == NULL){
+        head = newNode;
+        tail = newNode;
+        return;
+    }
+    tail -> next = newNode;
+    tail = newNode;
+}
+
+Node* cloneListByRandomPointers(Node* &head){
+    if(head == NULL)
+        return head;
+    Node* temp = head;
+    Node* cloneHead = NULL;
+    Node* cloneTail = NULL;
+    while(temp){
+        createAndInsertNode(cloneHead, cloneTail, temp -> data);
+        temp = temp -> next;
+    }
+    // NOW WE HAVE TO SET RANDOM POINTERS
+    unordered_map<Node*, Node*> mapping;
+    temp = head;
+    Node* temp1 = cloneHead;
+    while(temp && temp1){
+        mapping[temp] = temp1;
+        temp = temp -> next;
+        temp1 = temp1 -> next;
+    }
+    temp = head;
+    temp1 = cloneHead;
+     while(temp && temp1){
+        if(temp -> random){
+            temp1 -> random = mapping[temp -> random];
+            temp = temp -> next;
+            temp1 = temp1 -> next;
+         }
+        temp1 -> random = temp -> random; 
+        temp = temp -> next;
+        temp1 = temp1 -> next;
+     }
+    return cloneHead;
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(2);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 4);
+    insertAtTail(tail, 6);
+    insertAtTail(tail, 8);
+    insertAtTail(tail, 10); 
+    
+    head -> random = head -> next -> next;
+    head -> next -> random = head;
+    head -> next -> next -> random = head -> next -> next -> next -> next;
+    head -> next -> next -> next -> random = head -> next;
+    head -> next -> next -> next -> next -> random = NULL;
+    
+    printList(head);
+    Node* cloneHead = cloneListByRandomPointers(head);
+    printList(cloneHead);
+    
+    cout<<head -> random -> data<<endl;
+    cout<<cloneHead -> random -> data<<endl;
+    
+    return 0;
+}
+
+11. B- CLONE A LL USING RANDOM POINTERS [APPROACH 2 - OPTIMIZED CODE SPACE COMPLEXITY (O(1))
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    Node* random;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+        this -> random = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+void createAndInsertNode(Node* &head, Node* &tail, int data){
+    Node* newNode = new Node(data);
+    if(head == NULL){
+        head = newNode;
+        tail = newNode;
+        return;
+    }
+    tail -> next = newNode;
+    tail = newNode;
+}
+
+Node* cloneListByRandomPointers(Node* &head){
+    if(head == NULL)
+        return head;
+    Node* temp = head;
+    Node* cloneHead = NULL;
+    Node* cloneTail = NULL;
+    while(temp){
+        createAndInsertNode(cloneHead, cloneTail, temp -> data);
+        temp = temp -> next;
+    }
+    // CREATING LINKS LIKE A MAP
+    Node* originalNode = head;
+    Node* cloneNode = cloneHead;
+    while(originalNode && cloneNode){
+        Node* temp = originalNode -> next;
+        originalNode -> next = cloneNode;
+        originalNode = temp;
+        
+        temp = cloneNode -> next;
+        cloneNode -> next = originalNode;
+        cloneNode = temp;
+    }
+    // ASSIGNING RANDOM POINTERS
+    Node* ptr = head;
+    while(ptr){
+        if(ptr -> next){
+            ptr -> next -> random = ptr -> random ? ptr -> random -> next : NULL;
+            ptr = ptr -> next -> next;    
+        }
+    }
+    // REMOVING LINKS
+    ptr = head;
+    Node* ptr1 = cloneHead;
+    while(ptr && ptr1){
+        ptr -> next = ptr1 -> next;
+        ptr = ptr -> next;
+        
+        if(ptr)
+            ptr1 -> next = ptr -> next;
+        ptr1 = ptr1 -> next;
+    }
+    return cloneHead;
+}
+
+int main() {
+    Node* head = NULL;
+    Node* node = new Node(2);
+    head = node;
+    Node* tail = node;
+    
+    insertAtTail(tail, 4);
+    insertAtTail(tail, 6);
+    insertAtTail(tail, 8);
+    insertAtTail(tail, 10); 
+    
+    head -> random = head -> next -> next;
+    head -> next -> random = head;
+    head -> next -> next -> random = head -> next -> next -> next -> next;
+    head -> next -> next -> next -> random = head -> next;
+    head -> next -> next -> next -> next -> random = NULL;
+    
+    printList(head);
+    Node* cloneHead = cloneListByRandomPointers(head);
+    printList(cloneHead);
+    
+    cout<<head -> random -> data<<endl;
+    cout<<cloneHead -> random -> data<<endl;
+    cout<<cloneHead -> next -> random -> data<<endl;
+    return 0;
+} 
+
+12. REMOVE DUPLICATES FROM AN UNSORTED LL:
+
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &tail, int data){
+    Node* temp = new Node(data);
+    tail -> next = temp;
+    tail = temp;
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+Node* removeDuplicateFromUnsortedList(Node* &head){
+    if(head == NULL || head -> next == NULL)
+        return head;
+    unordered_map<int, bool> mapping;
+    Node* temp = head;
+    Node* prev = NULL;
+    while(temp){
+        if(true == mapping[temp -> data]){
+            Node* node = temp;
+            prev -> next = prev -> next -> next;
+            temp = temp -> next;
+            delete node;
+            
+        }
+        else{
+            mapping[temp -> data] = true;
+            prev = temp;
+            temp = temp -> next;
+        }
+    }
+    return head;
+}
+
+int main() {
+    
+    Node* head = NULL;
+    Node* node = new Node(10);
+    head = node;
+    Node* tail = node; 
+    
+    insertAtTail(tail, 12);
+    insertAtTail(tail, 11);
+    insertAtTail(tail, 11);
+    insertAtTail(tail, 12); 
+    insertAtTail(tail, 11);
+    insertAtTail(tail, 10); 
+    
+    printList(head);
+    Node* node1 = removeDuplicateFromUnsortedList(head);
+    printList(node1);
+    
+    return 0;
+}
+
+
+13. DOUBLE LL CODE TEMPLATE:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* previous;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> previous = NULL;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &head, Node* &tail, int data){
+    Node* temp = new Node(data);
+    if(head == NULL){
+        head = temp;
+        tail = temp;
+    }
+    else{
+        tail -> next = temp;
+        temp -> previous = tail;
+        tail = temp;
+    }
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+int main() {
+    Node* head = NULL;
+    Node* tail = NULL;
+    
+    insertAtTail(head, tail, 2);
+    insertAtTail(head, tail, 4);
+    insertAtTail(head, tail, 6);
+    insertAtTail(head, tail, 8);
+    insertAtTail(head, tail, 10); 
+    
+    printList(head);
+    cout<<head -> next -> next -> previous -> previous -> data<<endl;
+    return 0;
+}
+
+
+14. DOUBLE CIRCULAR LL CODE TEMPLATE:
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* previous;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> previous = NULL;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &head, Node* &tail, int data){
+    Node* temp = new Node(data);
+    if(head == NULL){
+        head = temp;
+        tail = temp;
+    }
+    else{
+        tail -> next = temp;
+        temp -> previous = tail;
+        tail = temp;
+    }
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+void doubleCircularList(Node* &head){
+    Node* temp = head;
+    while(temp -> next)
+        temp = temp -> next;
+    temp -> next = head;
+    head -> previous = temp;
+}
+
+int main() {
+    Node* head = NULL;
+    Node* tail = NULL;
+    
+    insertAtTail(head, tail, 2);
+    insertAtTail(head, tail, 4);
+    insertAtTail(head, tail, 6);
+    insertAtTail(head, tail, 8);
+    insertAtTail(head, tail, 10); 
+    
+    doubleCircularList(head);
+    printList(head);
+    cout<<head -> previous -> previous -> previous -> next -> data<<endl;
+    return 0;
+}
+
+
+15. (A) MERGE TWO SORTED LL [APRROACH 1 - SPACE COMPLEXITY - O(M+N) NOT OPTIMAL]
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &head, Node* &tail, int data){
+    Node* temp = new Node(data);
+    if(head == NULL){
+        head = temp;
+        tail = temp;
+    }
+    else{
+        tail -> next = temp;
+        tail = temp;
+    }
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+Node* mergeTwoSortedList(Node* &head1, Node* &head2){
+    if(head1 == NULL || head2 == NULL)
+        return head1;
+    Node* temp1 = head1;
+    Node* temp2 = head2;
+    Node* listHead = NULL;
+    Node* listTail= NULL;
+    while(temp1 && temp2){
+        if(temp1 -> data < temp2 -> data){
+            insertAtTail(listHead, listTail, temp1 -> data);
+            temp1 = temp1 -> next;
+        }
+        else{
+            insertAtTail(listHead, listTail, temp2 -> data);
+            temp2 = temp2 -> next;
+        }
+    }
+    while(temp1){
+        insertAtTail(listHead, listTail, temp1 -> data);
+        temp1 = temp1 -> next;
+    }
+    while(temp2){
+        insertAtTail(listHead, listTail, temp2 -> data);
+        temp2 = temp2 -> next;
+    }
+    return listHead;
+}
+
+int main() {
+    Node* head = NULL;
+    Node* tail = NULL;
+    Node* head1 = NULL;
+    Node* tail1 = NULL;
+    
+    insertAtTail(head, tail, 1);
+    insertAtTail(head, tail, 4);
+    insertAtTail(head, tail, 5);
+    
+    insertAtTail(head1, tail1, 2);
+    insertAtTail(head1, tail1, 3); 
+    insertAtTail(head1, tail1, 5);
+    
+    Node* ans = mergeTwoSortedList(head, head1);
+    printList(head);
+    printList(head1);
+    printList(ans);
+    
+    return 0;
+}
+
+
+15 (B) MERGE TWO SORTED LL [WITHOUT USING EXTRA SPACE]
+
+#include <iostream>
+using namespace std;
+
+class Node{
+  public:
+    int data;
+    Node* next;
+    
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }        
+};
+
+void insertAtTail(Node* &head, Node* &tail, int data){
+    Node* temp = new Node(data);
+    if(head == NULL){
+        head = temp;
+        tail = temp;
+    }
+    else{
+        tail -> next = temp;
+        tail = temp;
+    }
+}
+
+void printList(Node* &head){
+    Node* temp = head;
+    if(temp == NULL)
+        cout<<"List is empty"<<endl;
+        
+    while(temp){
+        cout<< temp -> data << "->";
+        temp = temp -> next;
+    }  
+    cout<<"NULL"<<endl;
+}
+
+Node* solve(Node* &temp1, Node* &temp2){
+    if(temp1 -> next == NULL){
+        temp1 -> next = temp2;
+        return temp1;
+    }
+    Node* curr1 = temp1;
+    Node* curr2 = temp2;
+    Node* next1 = curr1 -> next;
+    Node* next2 = NULL;
+    while(next1 && curr2){
+        if(curr2 -> data >= curr1 -> data && curr2 -> data <= next1 -> data){
+            next2 = curr2 -> next;
+            curr1 -> next = curr2;
+            curr2 -> next = next1;
+            curr1 = curr2;
+            curr2 = next2;
+        }
+        else{
+            curr1 = next1;
+            next1 = next1 -> next;
+            if(next1 == NULL){
+                curr1 -> next = curr2;
+                return temp1;
+            }
+        }
+    }
+    return temp1;
+}
+
+Node* mergeTwoSortedList(Node* &head1, Node* &head2){
+    if(head1 == NULL)
+        return head2;
+    if(head2 == NULL)
+        return head1;    
+    Node* curr1 = head1;
+    Node* curr2 = head2;
+    Node* ans = NULL;
+    if(curr1 -> data <= curr2 -> data)
+        ans = solve(curr1, curr2);
+    else
+        ans = solve(curr2, curr1);
+    return ans;
+}
+
+int main() {
+    Node* head = NULL;
+    Node* tail = NULL;
+    Node* head1 = NULL;
+    Node* tail1 = NULL;
+    
+    insertAtTail(head, tail, 2);
+    insertAtTail(head, tail, 3);
+    insertAtTail(head, tail, 5);
+    
+    insertAtTail(head1, tail1, 1);
+    insertAtTail(head1, tail1, 4); 
+    insertAtTail(head1, tail1, 5);
+    
+    Node* ans = mergeTwoSortedList(head, head1);
+    //printList(head);
+    //printList(head1);
+    printList(ans);
+    
+    return 0;
+}

@@ -1,0 +1,63 @@
+1. SIEVE OF ERATOSTHENUS(COUNT ALL PRIME IN A RANGE GIVEN IN A QUESTION):
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int x = 40, count = 0;
+    vector<bool> v(x,true);
+    v[0] = false; v[1] = false;
+    for(int i = 2; i< x; i++){
+        if(v[i] == true){
+            count++;
+            for(int j = 2*i; j< x; j+=i)
+                v[j] = false;
+        }
+    }
+    cout<<count<<endl;
+
+    return 0;
+}
+
+
+2. FIND GCD OF A GIVEN NUMBER:
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 98, y = 56;
+    if(x == 0)
+        cout<<y<<endl;
+    if(y == 0)
+        cout<<x<<endl;
+    while(x != y){
+        if(x > y)
+            x = x - y;
+        else
+            y = y - x;
+    }
+    cout<<y<<endl;
+
+    return 0;
+}
+
+
+3. FAST EXPONENTIATION (HERE % CONCEPT IS ALSO USED IN ORDER TO PROVIDE ANSWER IN A RANGE FOR VERY BIG NUMBERS, FOR THAT SEE VIDEO LATER):
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 2, n = 8, res = 1;
+    while(n > 0){
+        if(n & 1)
+            res = res * x;
+        x = x * x;
+        n = n >> 1;
+    }
+    cout<<res;    
+
+    return 0;
+}

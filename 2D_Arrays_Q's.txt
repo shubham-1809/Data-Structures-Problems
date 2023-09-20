@@ -1,0 +1,131 @@
+1. PRINT THE GIVEN MATRIX IN WAVE FORM ORDER:
+
+#include <iostream>
+#define ROW 3
+#define COL 4
+using namespace std;
+
+int main() {
+    
+    int arr[ROW][COL] = {1, 2, 3, 4, 
+			 5, 6, 7, 8, 
+			 9, 10, 11, 12};
+    for(int colIndex = 0; colIndex< COL; colIndex++){
+        // if column is odd
+        if(colIndex & 1){
+            // printing order will be bottom to top
+            for(int rowIndex = ROW - 1; rowIndex >= 0; rowIndex--)
+                cout<<arr[rowIndex][colIndex]<<" ";
+        }
+        // otherwise column is even
+        else{
+            // printing order will be top to bottom
+            for(int rowIndex = 0; rowIndex< ROW; rowIndex++)
+                cout<<arr[rowIndex][colIndex]<<" ";
+        }
+    }
+
+    return 0;
+}
+
+
+2. PRINT THE GIVEN MATRIX IN SPIRAL FORM ORDER:
+
+#include <iostream>
+#define ROW 3
+#define COL 4
+using namespace std;
+
+int main() {
+    int arr[ROW][COL] = {1, 2, 3, 4, 
+			 5, 6, 7 , 8, 
+			 9, 10, 11, 12};
+    int count = 0, end = ROW * COL;
+    int rowStart = 0, colStart = 0, rowEnd = ROW - 1, colEnd = COL - 1;
+    while(count < end){
+        for(int i = colStart; count < end && i<= colEnd; i++){
+            cout<<arr[rowStart][i]<<" ";
+            count++;
+        }
+        rowStart++;
+        for(int i = rowStart; count < end && i<= rowEnd; i++){
+            cout<<arr[i][colEnd]<<" ";
+            count++;
+        }
+        colEnd--;
+        for(int i = colEnd; count < end && i >= colStart; i--){
+            cout<<arr[rowEnd][i]<<" ";
+            count++;
+        }
+        rowEnd--;
+        for(int i = rowEnd; count < end && i >= rowStart; i--){
+            cout<<arr[i][colStart]<<" ";
+            count++;
+        }
+        colStart++;    
+    }
+    
+    return 0;
+}
+
+
+3. SEARCH IN A GIVEN 2D MATRIX (EACH ROW IS SORTED FROM LEFT TO RIGHT && FIRST INTEGER OF EACH ROW IS GREATER THAN LAST INTEGER OF PREVIOUS ROW):
+
+#include <iostream>
+#define ROW 3
+#define COL 4
+using namespace std;
+
+int main() {
+    int arr[ROW][COL] = {1, 2, 3, 4, 
+			 5, 6, 7 , 8, 
+			 9, 10, 11, 12};
+    int key = 40, start = 0, end = ROW * COL - 1;
+    
+    while(start <= end){
+        int mid = start + (end - start) / 2;
+        int midElement = arr[mid / COL][mid % COL];
+        
+        if(key == midElement){
+            cout<<"found"<<endl;
+            exit(0);
+        }
+        else if(key > midElement) 
+            start = mid + 1;
+        else
+            end = mid - 1;
+    }
+    cout<<"not found";
+    return 0;
+}
+
+
+4. SEARCH IN A GIVEN 2D MATRIX (EACH ROW IS SORTED FROM LEFT TO RIGHT && EACH COLUMN IS SORTED FROM TOP TO BOTTOM):
+
+#include <iostream>
+#define ROW 3
+#define COL 4
+using namespace std;
+
+int main() {
+    int arr[ROW][COL] = {1, 4, 7, 11, 
+			 2, 5, 8, 12, 
+			 3, 6, 9, 16};
+    // here start denotes row and end denotes column
+    int key = 1, start = 0, end = COL - 1;
+    while(start < ROW && end >= 0){
+        // find the element of first row and last column
+        int element = arr[start][end];
+        
+        if(key == element){
+            cout<<"found";
+            exit(0);
+        }
+        else if(key > element)
+            start++;
+        else
+            end--;
+    }
+    cout<<"not found";
+    return 0;
+}

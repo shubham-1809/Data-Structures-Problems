@@ -1,0 +1,806 @@
+1. IMPLEMENT A MAX HEAP USING AN ARRAY AND PERFORM INSERTION AND DELETION ON IT:
+
+#include <iostream>
+
+using namespace std;
+
+class Heap{
+    public:
+        int arr[100];
+        int size;
+        
+    Heap(){
+        arr[0] = -1;
+        size = 0;
+    }
+    
+    void insertInHeap(int val){
+        // insert in array by incrementing size by 1
+        size++;
+        int index = size;
+        arr[index] = val;
+        
+        // maintain the max heap property if it's distorted
+        while(index > 1){
+            // here we are moving from bottom to top(from last to first index of array)
+            if(arr[index] > arr[index / 2]){
+                swap(arr[index], arr[index / 2]);
+                index = index / 2;
+            }
+            else
+                return;
+        }
+    }
+    
+    void deleteInHeap(){
+        if(size == 0){
+            cout<<"empty"<<endl;
+            return;
+        }
+        // delete the first element(root) and replace it by last element(leaf)
+        arr[1] = arr[size];   
+        size--;
+        int index = 1;
+        
+        // maintaining the max heap property because after deletion it will be distorted
+        while(index <= size){
+            // here we are moving top to bottom(first to last index in an array)
+            int leftIndex = 2 * index;
+            int rightIndex = 2 * index + 1;
+            
+            if(leftIndex < size && arr[index] < arr[leftIndex]){
+                //swap(arr[index], arr[leftIndex]);
+                index = leftIndex;
+            }
+            if(rightIndex < size && arr[index] < arr[rightIndex]){
+                //swap(arr[index], arr[rightIndex]);
+                index = rightIndex;
+            }	
+            else
+                return;
+        }
+    }
+    
+    void printHeap(){
+        for(int i = 1; i<= size; i++)
+            cout<<arr[i]<<" ";
+    }
+};
+
+int main()
+{
+    // 1 based indexing is followed
+    Heap h;
+    h.insertInHeap(50);
+    h.insertInHeap(57);
+    h.insertInHeap(23);
+    h.insertInHeap(65);
+    h.insertInHeap(51);
+    
+    h.printHeap();
+    cout<<endl;
+    
+    h.deleteInHeap();
+    h.deleteInHeap();
+    
+    h.printHeap();
+
+    return 0;
+}
+
+
+2. IMPLEMENT A MAX HEAPIFY ALGORITHM(CONVERT AN ARRAY INTO A MAXHEAP):
+
+#include <iostream>
+
+using namespace std;
+
+// for every element we are placing it in it's correct position to form a maxheap
+void maxHeapify(int *arr, int size, int i){
+    int target = i;
+    int leftIndex = 2 * i, rightIndex = 2 * i + 1;
+    
+    if(leftIndex < size && arr[target] < arr[leftIndex])
+        target = leftIndex;
+    if(rightIndex < size && arr[target] < arr[rightIndex])
+        target = rightIndex;
+        
+    if(target != i){
+        swap(arr[i], arr[target]);
+        maxHeapify(arr, size, target);
+    }    
+}
+
+int main()
+{
+    // convert this array into a max heap
+    int arr[] = {-1, 57, 23, 45, 78, 64};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int n = size - 1;
+    // ignoring leaf nodes as they already a heap because they don't have any child.Therefore a single element is always considered as a heap
+    for(int i = n / 2; i> 0; i--)
+        maxHeapify(arr, size, i);
+        
+    for(int i = 1; i<= n; i++)
+        cout<<arr[i]<<" ";
+
+    return 0;
+}
+
+
+3. IMPLEMENT HEAP SORT ALGORITHM(HEAP SORT FUNCTION IS GIVING ERROR, SEE IT LATER):
+
+#include <iostream>
+
+using namespace std;
+
+void maxHeapify(int *arr, int size, int i){
+    int target = i;
+    int leftIndex = 2 * i, rightIndex = 2 * i + 1;
+    
+    if(leftIndex <= size && arr[leftIndex] > arr[target])
+        target = leftIndex;
+    if(rightIndex <= size && arr[rightIndex] > arr[target])
+        target = rightIndex;
+        
+    if(target != i){
+        swap(arr[target], arr[i]);
+        maxHeapify(arr, size, target);
+    }    
+}
+
+void heapSort(int *arr, int size){
+    int i = size;
+    while(i > 1){
+        swap(arr[i], arr[1]);
+        i--;
+        maxHeapify(arr, size, 1);
+    }
+}
+
+int main()
+{
+    int arr[] = {-1, 54, 32, 67, 42, 78};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int n = size - 1;
+  /*  for(int i = n / 2; i> 0; i--)
+        maxHeapify(arr, n, i);
+    for(int i = 1; i<= n; i++)
+        cout<<arr[i]<<" "; 
+    cout<<"f"<<endl;  */  
+    heapSort(arr, n);
+    for(int i = 1; i<= n; i++)
+        cout<<arr[i]<<" ";
+
+    return 0;
+}
+
+
+4. FIND THE KTH SMALLEST ELEMENT IN AN ARRAY:
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int findKthSmallestElement(int arr[], int size, int k){
+    // to find kth smallest element use maxheap and vice versa
+    priority_queue<int> pq;
+    
+    // push first k elements in maxheap
+    for(int i = 0; i< k; i++)
+        pq.push(arr[i]);
+    // for next remaining elements compare with top of maxheap and after this you will get your answer    
+    for(int i = k; i< size; i++){
+        if(arr[i] < pq.top()){
+            pq.pop();
+            pq.push(arr[i]);
+        }
+    } 
+    return pq.top();
+}
+
+int main()
+{
+    int arr[] = {45, 21 ,67 ,2 ,88};
+    int size = sizeof(arr) / sizeof(arr[0]), k = 1;
+    
+    cout<<findKthSmallestElement(arr, size, k);
+    return 0;
+}
+
+
+5. FIND THE MINIMUM COST TO CONNECT THE GIVEN NUMBER OF ROWS:
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+long long connectRopesWithMinimumCost(int arr[], int size){
+    priority_queue<long long, vector<long>, greater<long>> pq;
+    int cost = 0;
+    
+    // push elements in minheap
+    for(int i = 0; i< size; i++)
+        pq.push(arr[i]);
+    
+    while(pq.size() > 1){
+        long long x = pq.top();
+        pq.pop();
+        long long y = pq.top();
+        pq.pop();
+        cost = cost + x + y; 
+        pq.push(x + y);
+    }
+    return cost;
+}
+
+int main()
+{
+    int arr[] = {4, 3, 2, 6, 5, 7, 12};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    cout<<connectRopesWithMinimumCost(arr, size);
+}
+
+
+6. CONVERT A GIVEN BST INTO A MINHEAP(NOTE - A GIVEN BST IS ALWAYS A COMPLETE BINARY TREE)
+
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node* left;
+        Node* right;
+        
+    Node(int val){
+        this -> data = val;
+        this -> left = NULL;
+        this -> right = NULL;
+    }    
+};
+
+Node* buildBst(Node* root, int data){
+    if(root == NULL){
+        root = new Node(data);
+        return root;
+    }
+    if(root -> data < data)
+        root -> right = buildBst(root -> right, data);
+    else
+        root -> left = buildBst(root -> left, data);
+    return root;
+}
+
+void constructBst(Node* &root){
+    cout<<"enter data"<<endl;
+    int data;
+    cin>> data;
+    
+    while(data != -1){
+        root = buildBst(root, data);
+        cout<<"enter data"<<endl;
+        cin>> data;
+    }
+}
+
+void findInOrder(Node* root, vector<int> &inOrder){
+    if(root == NULL)
+        return;
+        
+    findInOrder(root -> left, inOrder);
+    inOrder.push_back(root -> data);
+    findInOrder(root -> right, inOrder);
+}
+
+Node* fillUsingPreOrder(Node* root, vector<int> inOrder, int &index){
+    // NOTE: root node is always less than it's child and one more thing that every left child should be less than it's sibling i.e. right child 
+    if(index >= inOrder.size() || root == NULL)
+        return NULL;
+        
+    root -> data = inOrder[index++];
+    root -> left = fillUsingPreOrder(root -> left, inOrder, index);
+    root -> right = fillUsingPreOrder(root -> right, inOrder, index);
+    return root;
+}
+
+void traverseNewHeap(Node* root){
+    if(root == NULL)
+        return;
+    cout<<root -> data<<" ";
+    traverseNewHeap(root -> left);
+    traverseNewHeap(root -> right);
+}
+
+int main()
+{
+    Node* root = NULL;
+    constructBst(root);
+    vector<int> inOrder;
+    
+    // step 1
+    findInOrder(root, inOrder);
+    // step 2: traverse the inOrder vector and construct tree using preorder form
+    int index = 0;
+    Node* newRoot = fillUsingPreOrder(root, inOrder, index);
+    traverseNewHeap(newRoot);
+}
+
+
+7. CHECK IF BINARY TREE A MAX/MIN HEAP:
+
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node* left;
+        Node* right;
+        
+    Node(int val){
+        this -> data = val;
+        this -> left = NULL;
+        this -> right = NULL;
+    }
+};
+
+Node* buildTree(Node* root){
+    cout<<"enter data: "<<endl;
+    int data;
+    cin>> data;
+    root = new Node(data);
+    
+    if(data == -1)
+        return NULL;
+    cout<<"enter a data in left of "<<data<<endl;
+    root -> left = buildTree(root -> left);
+    cout<<"enter a data in right of "<<data<<endl;
+    root -> right = buildTree(root -> right);
+    return root;
+}
+
+int numberOfNodes(Node* root){
+    if(root == NULL)
+        return 0;
+    return 1 + numberOfNodes(root -> left) + numberOfNodes(root -> right);    
+}
+
+bool isCompleteBinaryTree(Node* root, int index, int count){
+    if(root == NULL)
+        return true;
+    // calculated index is coming greater than nodes available
+    if(index >= count)
+        return false;
+        
+    bool left = isCompleteBinaryTree(root -> left, 2 * index + 1, count);
+    bool right = isCompleteBinaryTree(root -> right, 2 * index + 2, count);
+    
+    return left && right;
+}
+
+bool isMaxHeap(Node* root){
+    // leaf nodes is always a heap
+    if(root -> left == NULL && root -> right ==NULL)
+        return true;
+    // if only left child exist because we insert data into heap from left to right
+    if(root -> right == NULL)
+        return root -> data > root -> left -> data;
+    // if a node has two child and a furthur more recursive calls to their left anf right
+    else
+        return (root -> data > root -> left -> data) && (root -> data > root -> right -> data) && (isMaxHeap(root -> left)) && (isMaxHeap(root -> right));
+}
+
+bool isBinaryTreeMaxHeap(Node* root){
+    int index = 0;
+    if(isCompleteBinaryTree(root, index, numberOfNodes(root)) && isMaxHeap(root))
+        return true;
+    return false;    
+}
+
+int main()
+{
+    Node* root = NULL;
+    root = buildTree(root);
+    
+    cout<<isBinaryTreeMaxHeap(root);
+    
+    return 0;
+}
+
+
+8. FIND THE KTH LARGEST SUM SUB ARRAY:
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int findKthLargestSumSubArray(int arr[], int size, int k){
+    priority_queue<int, vector<int>, greater<int>> pq;
+    int sum = 0;
+    
+    for(int i = 0; i< size; i++){
+        sum = 0;
+        for(int j = i; j< size; j++){
+            sum = sum + arr[j];
+	    // INSERT INTO MIN HEAP TILL VALUE K	
+            if(pq.size() < k)
+                pq.push(sum);
+            else{
+		// OTHERWISE LOGIC IS LIKE THIS
+                if(sum > pq.top()){
+                    pq.pop();
+                    pq.push(sum);
+                }
+            }
+                
+        }
+    }
+    return pq.top();
+}
+
+int main()
+{
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int size = sizeof(arr) / sizeof(arr[0]), k = 3;
+    
+    cout<<findKthLargestSumSubArray(arr, size, k);
+
+    return 0;
+}
+
+
+9. MERGE K SORTED ARRAYS INTO ONE SORTED ARRAY:
+
+#include <iostream>
+#include <queue>
+#define ROW 3
+#define COL 4
+using namespace std;
+
+class Node{
+    // class is declared because we want to keep track that which element belongs to which array inside matrix during processing
+    public:
+        int data;
+        int row;
+        int col;
+    
+    Node(int val, int rowIndex, int colIndex){
+        this -> data = val;
+        row = rowIndex;
+        col = colIndex;
+    }    
+};
+
+class compare{
+    public:
+        bool operator()(Node* a, Node* b){
+            return a -> data > b -> data;
+        }
+};
+
+vector<int> mergeKSortedArrays(vector<vector<int>> arr){
+    // priority queue is of type Node because it will store data element of Node type inside it
+    priority_queue<Node*, vector<Node*>, compare> pq;
+    
+    // put first element of k arrays inside min heap
+    for(int i = 0; i< ROW; i++){
+        Node* temp = new Node(arr[i][0], i, 0);
+        pq.push(temp);
+    }
+    vector<int> ans;
+    
+    while(pq.size() > 0){
+        Node* topNode = pq.top();
+        pq.pop();
+        ans.push_back(topNode -> data);
+        
+        // checking whether next element of array which is popped earlier using min heap lie inside matrix or not
+        int &newRowIndex = topNode -> row;
+        int &newColIndex = topNode -> col;
+        
+        if(newColIndex + 1 < arr[newRowIndex].size()){
+            Node* temp = new Node(arr[newRowIndex][newColIndex + 1], newRowIndex, newColIndex + 1);
+            pq.push(temp);
+        }
+    }
+    return ans;
+}
+
+int main()
+{
+    vector<vector<int>> arr = {{1, 3, 5, 7},
+                               {2, 4, 6, 8},
+                               {0, 9, 10, 11}};
+                               
+    vector<int> ans = mergeKSortedArrays(arr); 
+    for(auto &i : ans)
+        cout<<i<<" ";
+
+    return 0;
+}
+
+
+10. MERGE K SORTED LL INTO SINGLE LL WITHOUT USING EXTRA SPACE:
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node* next;
+        
+    Node(int val){
+        this -> data = val;
+        this -> next = NULL;
+    }    
+};
+
+class compare{
+    public:
+        bool operator()(Node* a, Node* b){
+            return a -> data > b -> data;
+        }
+};
+
+void insertAtTail(int val, Node* &head, Node* &tail, vector<Node*> &v){
+    Node* newNode = new Node(val);
+    
+    if(head == NULL){
+        head = newNode;
+        tail = newNode;
+        v.push_back(head);
+    }
+    else{
+        tail -> next = newNode;
+        tail = newNode;
+    }
+}
+
+void printList(Node* head){
+    if(head == NULL)
+        return;
+        
+    Node* temp = head;
+    while(temp){
+        cout<<temp -> data<<" ";
+        temp = temp -> next;
+    }
+}
+
+Node* mergeKSortedLL(vector<Node*> v, int k){
+    if(k == 0)
+        return NULL;
+        
+    priority_queue<Node*, vector<Node*>, compare> pq;
+    
+    // insert first element of K LL in min heap
+    int n = v.size();
+    for(int i = 0; i< n; i++){
+        if(v[i] != NULL)
+            pq.push(v[i]);
+    }
+    
+    Node* newHead = NULL;
+    Node* newTail = NULL;
+    
+    while(pq.size() > 0){
+        Node* topNode = pq.top();
+        pq.pop();
+        // if next element in LL exist then insert it in min heap
+        if(topNode -> next){
+            pq.push(topNode -> next);
+        }
+        // LL insertion logic
+        if(newHead == NULL){
+            newHead = topNode;
+            newTail = topNode;
+        }
+        else{
+            newTail -> next = topNode;
+            newTail = topNode;
+        }
+    }  
+    return newHead;
+}
+
+int main()
+{   
+    vector<Node*> v;
+    int k = 3;   // number of LL
+    // LL1
+    Node* head1 = NULL;
+    Node* tail1 = NULL;
+    insertAtTail(1, head1, tail1, v);
+    insertAtTail(4, head1, tail1, v);
+    insertAtTail(5, head1, tail1, v);
+    // LL2
+    Node* head2 = NULL;
+    Node* tail2 = NULL;
+    insertAtTail(1, head2, tail2, v);
+    insertAtTail(3, head2, tail2, v);
+    insertAtTail(4, head2, tail2, v);
+    // LL3
+    Node* head3 = NULL;
+    Node* tail3 = NULL;
+    insertAtTail(2, head3, tail3, v);
+    insertAtTail(6, head3, tail3, v);
+    //insertAtTail(10, head3, tail3, v);
+    
+    Node* newHead = mergeKSortedLL(v, k);
+    printList(newHead);
+
+    return 0;
+}
+
+
+11. FIND THE SMALLEST RANGE WHICH INCLUDE ATLEAST ONE ELEMENT FROM K SORTED LIST:
+
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <climits>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        int row; 
+        int col;
+    
+    Node(int val, int rowIndex, int colIndex){
+        this -> data = val;
+        row = rowIndex;
+        col = colIndex;
+    }  
+};
+
+class Compare{
+    public:
+        bool operator()(Node* a, Node* b){
+            return a -> data > b -> data;
+        }
+};
+
+int getSmallestRangeFromKSortedList(vector<vector<int>> arr, int k, int rowSize){
+    // this minheap will store Node* type objects of arr
+    priority_queue<Node*, vector<Node*>, Compare> minheap;
+    
+    // defining min & max value to find range
+    int mini = INT_MAX, maxi = INT_MIN;
+    
+    // inserting first element of k list in minheap and deriving mini & maxi
+    for(int i = 0; i< k; i++){
+        minheap.push(new Node(arr[i][0], i, 0));
+        mini = min(mini, arr[i][0]);
+        maxi = max(maxi, arr[i][0]);
+    }
+    // this will give final answer range 
+    int start = mini, end = maxi;
+    
+    // finding minimum range logic
+    while(!minheap.empty()){
+        Node* temp = minheap.top();
+        minheap.pop();
+        mini = temp -> data;
+        
+        if(maxi - mini < end - start){
+            start = mini;
+            end = maxi;
+        }
+        // checking if next element in same row exist or not from where mini was extracted
+        if(temp -> col + 1 < rowSize){
+            maxi = max(maxi, arr[temp -> row][temp -> col + 1]);
+            minheap.push(new Node(arr[temp -> row][temp -> col + 1], temp -> row, temp -> col + 1));
+        }
+        else
+            break;
+    }
+    return end - start + 1;
+}
+
+int main()
+{
+    vector<vector<int>> arr = {{1, 10, 11},
+                               {2, 3, 20},
+                               {5, 6, 12}};
+    int k = 3, rowSize = 3;
+    
+    cout<<getSmallestRangeFromKSortedList(arr, k, rowSize);
+
+    return 0;
+}
+
+
+12. FIND MEDIAN IN A RUNNING STREAM OF INTEGERS:
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int signumFunc(int maxSize, int minSize){
+    // function will return values based on sizes of max and min heap (intuition is that maxheap will lie on left side of median and minheap will lie on right side)
+    if(maxSize == minSize)
+        return 0;
+    else if(maxSize > minSize)
+        return 1;
+    else
+        return -1;
+}
+
+void getMedian(int element, priority_queue<int> &maxHeap, priority_queue<int, vector<int>, greater<int>> &minHeap, int &median){
+    
+    switch(signumFunc(maxHeap.size(), minHeap.size())){
+        // both max and min heap are of same size
+        case 0: 
+            // finding median if it's greater than element, then element goes into maxheap and median will be top of maxHeap(visualize on pen paper)
+            if(median > element){
+                maxHeap.push(element);
+                median = maxHeap.top();
+            }
+            // else it will go in minHeap
+            else{
+                minHeap.push(element);
+                median = minHeap.top();
+            }
+            break;
+        
+        // maxheap size is greater than minheap size    
+        case 1:
+            // this if condition is used to balance the difference b/w max and min heap size should be atmost one (visualize on pen paper)
+            if(median > element){
+                minHeap.push(maxHeap.top());
+                maxHeap.pop();
+                maxHeap.push(element);
+                median = (maxHeap.top() + minHeap.top()) / 2;
+            }
+            // else part shows that the difference is already balanced, so simply find median
+            else{
+                minHeap.push(element);
+                median = (maxHeap.top() + minHeap.top()) / 2;
+            }
+            break;
+        
+        // minheap size is greater than maxHeap size    
+        case -1:
+            // if part shows that the difference is already balanced, so simply find median
+            if(median > element){
+                maxHeap.push(element);
+                median = (maxHeap.top() + minHeap.top()) / 2;
+            }
+            // this else condition is used to balance the difference b/w max and min heap size should be atmost one (visualize on pen paper)
+            else{
+                maxHeap.push(minHeap.top());
+                minHeap.pop();
+                minHeap.push(element);
+                median = (maxHeap.top() + minHeap.top()) / 2;
+            }
+    }
+}
+int main()
+{
+    vector<int> v = {5, 3, 8};
+    vector<int> ans;
+    int median = 0;
+    // maxHeap and minHeap is required to optimise answer
+    priority_queue<int> maxHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    
+    // traversing in a given stream for each element
+    for(int i = 0; i< v.size(); i++){
+        getMedian(v[i], maxHeap, minHeap, median);
+        ans.push_back(median);
+    }
+    for(auto i : ans)
+        cout<<i<<" ";
+
+    return 0;
+}
