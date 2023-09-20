@@ -1,2 +1,3 @@
 # Data-Structures-Problems
-Here i will add the codes related to DSA problems
+Here i will add the codes related to DSA problems.
+Author - Shubham Chouksey
